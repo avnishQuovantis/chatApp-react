@@ -1,0 +1,21 @@
+body{
+  margin:0
+}
+@media (max-aspect-ratio:7/10) {
+  .JoinContainer{
+    width: 100%;
+  }
+
+.JoinContainer >img{
+  width: 30vw!important;
+}
+.JoinContainer > h1{
+  font-size: 2.5vmax;
+  color:white;
+  font-family: 'Roboto', sans-serif;
+  border-bottom:0.2vmax solid white;
+  width: 55vw!important;
+  padding:3vw;
+  
+}
+}

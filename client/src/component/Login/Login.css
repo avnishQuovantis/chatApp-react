@@ -1,0 +1,67 @@
+.LoginPage{
+    background-color: rgb(19, 19, 19);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.LoginContainer{
+/* border:2px solid white;/ */
+width: 50%;
+/* height: 50%; */
+flex-direction: column;
+display: flex;
+align-items: center;
+}
+.LoginContainer >img{
+    width: 10vmax;
+}
+.LoginContainer > h1{
+    font-size: 2.5vmax;
+    color:white;
+    font-family: 'Roboto', sans-serif;
+    border-bottom:0.2vmax solid white;
+    width: 25vmax;
+    padding:1vmax;
+    text-align: center;
+    box-sizing:border-box
+    ;
+}
+#loginInput{
+    width: 25vmax;
+    padding:1.5vmax;
+    border:none;
+    margin:2vmax;
+    outline:none;
+    font-size: 1.2vmax;
+    box-sizing:border-box
+    ;
+
+}
+#loginSelect{
+    padding: 0.4rem;
+    margin: 2vmax;
+    font-size: 1.2rem;
+    color: #282828;
+    border-radius: 0.3rem;
+    outline: none;
+    border: 0;
+    background: whitesmoke;
+}
+.loginbtn{
+    width: 25vmax;
+    padding:1.5vmax;
+    border:none;
+    color:white;
+    font-family: "Roboto";
+    outline:none;
+    font-size: 1.2vmax;
+background-color: crimson;
+box-sizing: border-box;
+transition: all .4s;
+cursor:pointer
+}
+.loginbtn:hover{
+background-color: rgb(230, 10, 54);
+}
