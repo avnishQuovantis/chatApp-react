@@ -2,7 +2,8 @@ import React from 'react'
 import "./Users.css"
 import userLogo from "../../images/user-logo.png"
 
-function Users({ usersOnline, selectUser, user }) {
+function Users({ usersOnline, selectUser, name, id }) {
+    console.log(usersOnline)
     return (
         <div className='userList'>
             <div className='userList__heading'>
@@ -11,7 +12,7 @@ function Users({ usersOnline, selectUser, user }) {
                 </div>
 
                 <div className='userList__heading__right'>
-                    {user}
+                    {name}
                 </div>
             </div>
             <input type="text" className='userList__search' placeholder='&#128269; Search friends' />
@@ -19,7 +20,7 @@ function Users({ usersOnline, selectUser, user }) {
                 usersOnline.map((userOnline, index) => {
                     return (
                         <>
-                            <div className="userList__user" key={userOnline.id} onClick={() => selectUser(userOnline.id)} >
+                            {id != userOnline.id && <div className="userList__user" key={userOnline.id} onClick={() => selectUser(userOnline.id)} >
                                 <div className='userList__user__top'>
                                     <span className='userList__user__top-name'>{userOnline.username}   </span>
                                     <i class="bi bi-circle"></i>
@@ -28,6 +29,7 @@ function Users({ usersOnline, selectUser, user }) {
                             <span>{}</span>
                         </div> */}
                             </div>
+                            }
                         </>
                     )
                 })

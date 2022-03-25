@@ -10,7 +10,7 @@ function Join() {
     const navigate = useNavigate()
 
     const handleSend = () => {
-        navigate("/group", { state: { user: name } })
+        navigate("/group", { state: { username: name } })
     }
     return (
         <div className='LoginPage'>

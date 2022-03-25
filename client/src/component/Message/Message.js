@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Message.css"
-const Message = ({ user, message, classs }) => {
+const Message = ({ user, message, classs, index }) => {
     console.log(message);
     if (user == '') {
         return (
