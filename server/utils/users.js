@@ -1,11 +1,12 @@
+const moment = require('moment');
 let users = [];
-
+let messages = {}
 // Join user to chat
-function userJoin(id, username, room) {
-  const user = { id, username, room };
+function userJoin(id, socketId, username, email, name) {
+  const user = { id, socketId, username, email, name };
 
   users.push(user);
-  console.log(users);
+  console.log(user);
   return user;
 }
 
@@ -15,9 +16,13 @@ function getCurrentUser(id) {
   return users.find(user => user.id === id);
 }
 
+//getAllUsSer onl
+function getUsersOnline() {
+  return users
+}
 // User leaves chat
-function userLeave(id) {
-  const index = users.findIndex(user => user.id === id);
+function userLeave(socketId) {
+  const index = users.findIndex(user => user.socketId === socketId);
 
   if (index !== -1) {
     let user = users[index]
@@ -33,9 +38,12 @@ function getRoomUsers(room) {
   return users.filter(user => user.room === room);
 }
 
+
 module.exports = {
   userJoin,
   getCurrentUser,
   userLeave,
-  getRoomUsers
+  getRoomUsers,
+
+  getUsersOnline
 };
