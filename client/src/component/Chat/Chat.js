@@ -2,113 +2,95 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import "./Chat.css"
 import socketIO, { io } from "socket.io-client"
-import ReactScrollToBottom from "react-scroll-to-bottom"
-import sendLogo from "../../images/send-logo.png"
-import close from "../../images/close.png"
 import Message from '../Message/Message'
 import Users from '../Users/Users'
 import jsLogo from "../../images/js-logo.jpg"
 import javaLogo from "../../images/java-logo.jpg"
 import pythonLogo from "../../images/python-logo.png"
+import { useDispatch, useSelector } from 'react-redux'
+import { CURRENT_CHAT, SELECT_USER, SET_SOCKET_ID, USER_ONLINE } from '../../store/descriptor/descriptors'
+import ChatBox from '../ChatBox/ChatBox'
 
 const ENDPOINT = "http://localhost:4500/"
 
 let socket
 function Chat() {
-    const [id, setId] = useState("")
-    const [user, setUser] = useState(null)
-    const [message, setMessage] = useState("")
-    const [messages, setMessages] = useState([])
+    const user = useSelector(state => state.auth.currUser)
+    const dispatch = useDispatch()
+    // const [messages, setMessages] = useState([])
+    const selectedUser = useSelector(state => state.main.selectedUser)
 
     const [usersOnline, setUsersOnline] = useState([])
-    const [selectedUser, setSelectedUser] = useState("")
-    // const send = () => {
-    //     socket.emit("chatMessage", { message, id, room })
-    //     setMessage("")
-    // }
-    const { username } = useLocation().state
     const selectUser = (id) => {
-        console.log(id);
         let currentUser = usersOnline.find(userr => userr.id === id)
-        console.log(currentUser);
-        setSelectedUser(currentUser)
+        socket.emit("userChat", { user: user, to: currentUser })
+        dispatch({ type: SELECT_USER, payload: currentUser })
     }
-    const sendPrivateMessage = () => {
-        socket.emit("sendPrivateMessage", { content: message, to: selectedUser.id, id: id })
-        console.log("send message");
-    }
-    // const selectRoom = () => {
-    //     setSelectedUser("")
-    //     socket.emit("joinRoom", { username: user, room: room })
-
-    // }
 
     useEffect(() => {
         socket = socketIO(ENDPOINT, { transports: ["websocket"] })
-        console.log(username);
-        socket.emit("join", { username: username, room: "" })
+        console.log(user);
 
-        socket.on("welcome", ({ user, message }) => {
-            alert(message);
-            // setId(user["id"])
-            setUser(user)
+        socket.emit("join", { userr: user })
+
+        socket.on("welcome", (data) => {
+            alert(data.message);
+            dispatch({ type: SET_SOCKET_ID, payload: data.user.socketId })
+            console.log(data);
         })
         socket.on("userJoined", ({ message, user, currentUsers }) => {
             alert("user has joined")
-            setId(socket["id"])
             console.log("currentUsers", currentUsers);
             setUsersOnline(currentUsers)
+            dispatch({ type: USER_ONLINE, payload: currentUsers })
         })
 
+        socket.on("getUserChat", ({ to, chat }) => {
+            console.log("user chat", chat);
+            dispatch({ type: CURRENT_CHAT, payload: chat })
 
+        })
 
         socket.on("leave", (data) => {
+            dispatch({ type: USER_ONLINE, payload: data.users })
             setUsersOnline(data.users)
             alert("user left")
-            console.log("leave ", username);
+            console.log("leave ");
+        })
+
+        socket.on("privateMessage", ({ from, message, to }) => {
+            console.log("inside private message", to, message);
+            dispatch({ type: CURRENT_CHAT, payload: message })
         })
         return () => {
-            console.log(id);
 
             socket.emit("disconnect")
-
             socket.off()
         }
     }, [])
-    useEffect(() => {
+    // useEffect(() => {
 
-        socket.on("privateMessage", ({ from, message }) => {
-            console.log("inside private message");
+    //     socket.on("privateMessage", ({ from, message, to }) => {
+    //         console.log("inside private message", to, message);
 
-            setMessages([...messages, { user: from, message }])
-        })
+    //         setMessages([...message])
+    //     })
+    //     return () => socket.off()
 
-        return () => socket.off()
+    // }, [messages])
 
-    }, [messages])
+
     return (
         <div className='chatPage'>
             <div className='chatPageContainer'>
-                <Users usersOnline={usersOnline} name={username} id={id} selectUser={selectUser} />
-                <div className='chatContainer'>
-                    <div className='header'>
-                        <h2>{selectedUser !== "" && selectedUser.username} </h2>
-                        <a href="/"><img src={close} alt='' /></a>
-                    </div>
 
-                    <ReactScrollToBottom className='chatBox'>
-                        {messages.map((item, index) => {
-                            // alert(item.user);
-                            console.log(item);
-                            return (<Message user={item.user.id == id ? '' : item.user} message={item.message} classs={item.user.id == id ? "right" : "left"} />)
-                        }
-                        )}
-                    </ReactScrollToBottom>
-                    <div className='inputBox'>
-                        <input onKeyDown={e => e.key == "Enter"} onChange={e => setMessage(e.target.value)} value={message} type="text" id="chatInput" />
-                        <button id="sendBtn" onClick={sendPrivateMessage}> <img src={sendLogo} /> </button>
-                    </div>
-                </div>
+                <Users usersOnline={usersOnline} name={user.username} id={user.id} socketId={user.socketId} selectUser={selectUser} />
+
+                {
+                    selectedUser == null ? <div>dd</div> :
+                        <ChatBox socket={socket} selectedUser={selectedUser} />
+                }
+
                 <div className='groupList'>
                     <div className='groupList__groups'>
                         <div className='groupList__groups__heading'>

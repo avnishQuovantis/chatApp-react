@@ -2,7 +2,7 @@ import React from 'react'
 import "./Users.css"
 import userLogo from "../../images/user-logo.png"
 
-function Users({ usersOnline, selectUser, name, id }) {
+function Users({ usersOnline, selectUser, name, id, socketId }) {
     console.log(usersOnline)
     return (
         <div className='userList'>

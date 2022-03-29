@@ -28,7 +28,7 @@ align-items: center;
     box-sizing:border-box
     ;
 }
-#loginInput{
+.loginInput{
     width: 25vmax;
     padding:1.5vmax;
     border:none;

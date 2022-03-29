@@ -1,16 +1,16 @@
 import React from 'react'
 import "./Message.css"
-const Message = ({ user, message, classs, index }) => {
+const Message = ({ username, message, classs, index, time }) => {
     console.log(message);
-    if (user == '') {
+    if (username == '') {
         return (
-            <div className={`messageBox ${classs}`}>{`you:${message}`}</div>
+            <div className={`messageBox ${classs}`}>{`you:${message}`} <span >{time}</span></div>
         )
     }
     else {
         return (
             <div className={`messageBox ${classs}`}>
-                {`${user.username}:${message}`}
+                {`${username}:${message}`} <span>{time}</span>
             </div >
         )
     }
