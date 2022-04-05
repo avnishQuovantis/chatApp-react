@@ -1,7 +1,12 @@
 const userModel = require("../database/userModel")
 const jwt = require("jsonwebtoken")
 const { JWT_KEY } = require("../secrets")
+const multer = require("multer")
 const { handleErrors, createToken } = require("./helperFn")
+const path = require("path")
+const { log } = require("console")
+const Blob = require("node-blob")
+// const { URL } = require("url")
 async function login(req, res) {
     const { email, password } = req.body
     try {
@@ -22,15 +27,29 @@ async function login(req, res) {
 
 async function signUp(req, res) {
     try {
-        console.log("signup body", req.body);
+
+
+        console.log("signup", req.body);
         let checkEmail = await userModel.findOne({ email: req.body.email })
         console.log(checkEmail);
         if (checkEmail == null) {
-            const user = await userModel.create(req.body)
+            const obj = { username: req.body.name, name: req.body.name, password: req.body.password, email: req.body.email, profile: null }
+
+            if (req.file) {
+                let fileLocation = path.resolve(__dirname, "../files/profiles" + req.file.filename)
+                console.log("filelocati", fileLocation);
+
+                obj.profile = req.file.filename
+            }
+            console.log('file -- ', req.file.filename);
+            const user = await userModel.create(obj)
+
             const token = createToken(user._id)
-            console.log(user);
-            await userModel.findByIdAndUpdate(user._id, { token: token })
+            await userModel.findByIdAndUpdate(user._id, {
+                token: token
+            })
             res.status(200).json({ user, token })
+
         } else {
             res.json({ user: null })
         }
@@ -66,4 +85,16 @@ async function getUser(req, res) {
         res.status(500).json({ user: err.message })
     }
 }
-module.exports = { login, signUp, getUser, updateUser }
+async function getProfilePhoto(req, res) {
+    try {
+        const { id } = req.params
+        console.log(id);
+        res.sendFile(id, { root: path.join(__dirname, "../files/profiles") })
+    } catch (Err) {
+        console.log(Err);
+        res.status(500).json({ user: null })
+    }
+}
+
+
+module.exports = { login, signUp, getUser, updateUser, getProfilePhoto }

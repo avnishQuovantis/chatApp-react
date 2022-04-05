@@ -2,8 +2,8 @@ const moment = require('moment');
 let users = [];
 let messages = {}
 // Join user to chat
-function userJoin(id, socketId, username, email, name) {
-  const user = { id, socketId, username, email, name };
+function userJoin(id, socketId, username, email, name, profile) {
+  const user = { id, socketId, username, email, name, profile };
 
   users.push(user);
   console.log(user);

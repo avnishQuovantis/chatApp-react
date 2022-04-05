@@ -28,7 +28,10 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     chats: { type: Array },
-    groups: { type: Array }
+    groups: { type: Array },
+    profile: {
+        type: String
+    }
 })
 
 //save password in hashed form

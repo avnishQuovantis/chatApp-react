@@ -1,27 +1,60 @@
 const http = require("http")
 const express = require("express")
 const cors = require("cors")
-const { JWT_KEY } = require("./secrets")
 const cookieParser = require("cookie-parser")
 const socketIO = require("socket.io")
+const bodyParser = require("body-parser")
+const multer = require("multer")
+const path = require("path")
 
 const { userJoin,
     getCurrentUser,
     userLeave, getUsersOnline,
     getRoomUsers,
 } = require("./utils/users")
-const { login, signUp, getUser, updateUser } = require("./functions/userFunctions")
-const { getChats, saveChats, getChat } = require("./functions/itemFunctions")
-const { log } = require("console")
+const storeImage = require("./functions/storeImage")
+const { login, signUp, getUser, updateUser, getProfilePhoto } = require("./functions/userFunctions")
+const { getChats, saveChats, getChat, getChatImage } = require("./functions/itemFunctions")
 const port = 4500 || process.env.port
 
 const app = express()
 app.use(cors())
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'files')))
 app.use(express.json())
+
 app.post("/login", login)
-app.post("/signup", signUp)
+const storage = multer.diskStorage({
+    destination: "./files/profiles",
+    filename: function (req, file, cb) {
+        console.log("inside distorage ", file);
+        cb(null, Math.random().toString(16).slice(2) + path.extname(file.originalname));
+    }
+});
+const upload = multer({
+
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+        console.log(file.mimetype);
+        if (file.mimetype == "image/jpg" || file.mimetype == "image/png") {
+            cb(null, true)
+        } else {
+            console.log("");
+            cb(null, false)
+        }
+    },
+    limits: { fileSize: 1000000 },
+})
+
+
+
+app.post("/signup", upload.single("image"), signUp)
+
 app.get("/chats", getChats)
+app.get("/profile/dp/:id", getProfilePhoto)
+
+app.get("/posts/images/:id", getChatImage)
 //pass app to http.create server to create server
 const server = http.createServer(app)
 
@@ -33,17 +66,27 @@ const io = socketIO(server)
 io.on("connection", (socket) => {
 
     socket.on("join", ({ userr }) => {
-        const { email, username, id, name } = userr
+        const { email, username, id, name, profile } = userr
 
-        const user = userJoin(id, socket.id, username, email, name)
+        const user = userJoin(id, socket.id, username, email, name, profile)
         socket.emit("welcome", { from: "admin", message: "Welcome to chat", user: user })
         io.emit("userJoined", { message: "user has joined", user: user, currentUsers: getUsersOnline() })
 
-        socket.on("sendPrivateMessage", async ({ content, to, userid, from }) => {
+        socket.on("sendPrivateMessage", async ({ content, to, from, type }) => {
             console.log("private message ",);
             const getUser = getCurrentUser(to.id)
-            let message = await saveChats(from, to, content)
+            let message = await saveChats(from, to, content, type, null)
             console.log(message);
+            io.to(to.socketId).to(socket.id).emit("privateMessage", { from: user, message: message, to: getUser })
+        })
+
+        socket.on("sendImagePrivate", async ({ content, to, from, type, mimetype }) => {
+            console.log("inside sendImagePrivate", content);
+            const filename = await storeImage(from, to, content, mimetype)
+            console.log("filename -" + filename);
+            const getUser = getCurrentUser(to.id)
+            let message = await saveChats(from, to, filename, type, mimetype)
+            console.log("sendImageMessagee " + message);
             io.to(to.socketId).to(socket.id).emit("privateMessage", { from: user, message: message, to: getUser })
         })
         socket.on("userChat", async ({ user, to }) => {

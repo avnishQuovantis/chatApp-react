@@ -1,0 +1,105 @@
+.chatContainer{
+    
+    background-color: white;
+    width: 45%;
+    height: 100%;
+}
+.header{
+    background-color: white;
+    height: 13%;
+    display: flex;
+    border-bottom: 2px solid whitesmoke;
+    align-items: center;
+}
+.header h2{
+    color:black;
+    font-family: "Roboto";
+    
+}
+.header img{
+    margin:2.5vmax;
+    transition: all .5s;
+    width: 2rem;
+    /* background-color: white; */
+}
+.header img:hover{
+    transform: scale(1.1);
+}
+.chatBox{
+    /* border:0.2vmax solid black; */
+    height: 78%;
+    box-sizing: border-box;
+    overflow-y:auto;
+    background: white;
+}
+.inputBox{
+    border-top:0.2vmax solid rgba(0, 0, 0, 0.124) ;
+    height: 9%;
+    box-sizing: border-box;
+    display: flex;
+}
+
+
+#chatInput{
+    width: 80%;
+    border:none;
+    background-color: white;
+    padding: 2vmax;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 1.2vmax;
+    font-family: 'Roboto';
+}
+#sendBtn{
+    background-color: blue;
+    color: white;
+    width: 3rem;
+    margin: 0.2rem
+ 0.5rem;
+    border-radius: 100%;
+    border: none;
+transition: all 0.5s;
+}
+
+#sendBtn:hover{
+    opacity: 0.95;
+    transform: scale(1.05);
+}
+#sendBtn > img{
+    width: 2rem;
+}
+.imageInput-container{
+    position: relative;
+}
+#imageInput{
+    opacity: 0;
+    width: 0.2rem;
+    height: 0.2rem;
+    position: absolute;
+}
+
+.imageLabel{
+    display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  /* width: 3rem; */
+  /* height: 100%; */
+  /* box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4); */
+font-weight: bold;
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 0 0.4rem;
+  transition: transform .2s ease-out;
+
+}
+#imageInput:hover + .imageLabel,
+#imageInput:focus + .imageLabel {
+  transform: scale(1.02);
+}
+
+.chatContainerImage{
+    border: 100%;
+    width: 2.5rem;
+    height: 2.5rem;
+}
