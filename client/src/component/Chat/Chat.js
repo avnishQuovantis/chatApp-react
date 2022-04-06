@@ -10,7 +10,7 @@ import pythonLogo from "../../images/python-logo.png"
 import { useDispatch, useSelector } from 'react-redux'
 import { CURRENT_CHAT, SELECT_USER, SET_SOCKET_ID, USER_ONLINE } from '../../store/descriptor/descriptors'
 import ChatBox from '../ChatBox/ChatBox'
-
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 const ENDPOINT = "http://localhost:4500/"
 
 let socket
@@ -19,10 +19,14 @@ function Chat() {
     const dispatch = useDispatch()
     // const [messages, setMessages] = useState([])
     const selectedUser = useSelector(state => state.main.selectedUser)
-
+    const chats = useSelector(state => state.main.chats)
     const [usersOnline, setUsersOnline] = useState([])
     const selectUser = (id) => {
+
         let currentUser = usersOnline.find(userr => userr.id === id)
+        if (currentUser == undefined) {
+            currentUser = chats.find(userr => userr.id === id)
+        }
         socket.emit("userChat", { user: user, to: currentUser })
         dispatch({ type: SELECT_USER, payload: currentUser })
     }
@@ -30,9 +34,7 @@ function Chat() {
     useEffect(() => {
         socket = socketIO(ENDPOINT, { transports: ["websocket"] })
         console.log(user);
-
         socket.emit("join", { userr: user })
-
         socket.on("welcome", (data) => {
             alert(data.message);
             dispatch({ type: SET_SOCKET_ID, payload: data.user.socketId })
@@ -59,8 +61,10 @@ function Chat() {
         })
 
         socket.on("privateMessage", ({ from, message, to }) => {
-            console.log("inside private message", to, message);
-            dispatch({ type: CURRENT_CHAT, payload: message })
+            console.log("inside private message", from, to);
+            if (from.id = user.id || to.id == user.id || selectedUser != null && from.id == selectedUser.id) {
+                dispatch({ type: CURRENT_CHAT, payload: message })
+            }
         })
         return () => {
 
@@ -83,8 +87,8 @@ function Chat() {
     return (
         <div className='chatPage'>
             <div className='chatPageContainer'>
-
-                <Users usersOnline={usersOnline} name={user.username} id={user.id} socketId={user.socketId} selectUser={selectUser} />
+                {console.log(user)}
+                <Users usersOnline={usersOnline} image={user.profile} name={user.username} id={user.id} socketId={user.socketId} selectUser={selectUser} />
 
                 {
                     selectedUser == null ? <div>dd</div> :
@@ -92,6 +96,19 @@ function Chat() {
                 }
 
                 <div className='groupList'>
+                    <div className='groupList__peope'>
+                        <span className='groupList__people__heading'><PersonOutlinedIcon />People Online</span>
+                        {
+                            usersOnline.map(online => {
+                                return (
+                                    <>
+                                        {online.id != user.id && <div className='groupList__people__online' onClick={() => {
+                                            selectUser(online.id)
+                                        }}>
+                                            <img src={online.profile !== "" ? "http://localhost:4500/profile/dp/" + online.profile : ""} /><div>{online.username}</div>
+                                        </div>}</>)
+                            })}
+                    </div>
                     <div className='groupList__groups'>
                         <div className='groupList__groups__heading'>
                             <span><i class="bi bi-people-fill"></i> Groups</span>
@@ -104,9 +121,6 @@ function Chat() {
                         <div className="groupList__groups__group">
                             <img src={pythonLogo} /> <span> Python</span>
                         </div>
-                    </div>
-                    <div className='groupList__peope'>
-
                     </div>
                 </div>
             </div>

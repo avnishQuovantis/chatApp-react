@@ -1,19 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./Message.css"
-const Message = ({ username, message, classs, index, time }) => {
+import { saveAs } from "file-saver"
+const Message = ({ username, message, classs, item, index, time, type }) => {
     console.log(message);
-    if (username == '') {
+
+    const [open, setOpen] = useState(false)
+    if (open) {
         return (
-            <div className={`messageBox ${classs}`}>{`you:${message}`} <span >{time}</span></div>
+            <div className='imageContainer open' onClick={() => { setOpen(false) }}>
+                <img src={`http://localhost:4500/posts/images/${message}`} />
+            </div>
         )
     }
-    else {
+    else if (type != 'text') {
         return (
-            <div className={`messageBox ${classs}`}>
-                {`${username}:${message}`} <span>{time}</span>
-            </div >
+            <div className={`messageBox ${classs} messageBoxImage`}>
+                <div className='messageBoxName bold'>
+                    {`${username == '' ? 'you' : username}:`}
+                </div>
+                <img src={`http://localhost:4500/posts/images/${message}`}
+                    // onClick={() => {saveAs(`http://localhost:4500/posts/images/${message}`)}}
+                    onClick={() => { setOpen(true) }}
+                />
+                <span>{time}</span>
+            </div>
         )
+    } else {
+        return (
+            <div className={`messageBox ${classs}`} >
+                <div className='bold'>{`${username == '' ? 'you' : username}:`}</div>
+                <div>{message}</div>
+                <span >{time}</span>
+            </div>
+        )
+
     }
+    // }
+    // else {
+    //     return (
+    //         <div className={`messageBox ${classs}`}>
+    //             {`${username}:${message}`} <span>{time}</span>
+    //         </div >
+    //     )
+    // }
 }
 
 export default Message

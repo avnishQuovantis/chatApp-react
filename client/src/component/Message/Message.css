@@ -10,6 +10,10 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
 }
+.messageBox>div{
+    display: inline-block;
+    font-size: 1.5vmax;
+}
 .right{
     float:right;
 background-color: blue;
@@ -23,7 +27,48 @@ background-color: ghostwhite
 }
 .messageBox span{
     position: absolute;
-    font-size: 0.7rem;
+    font-size: 1vmax;
      right: 5px;
     bottom: 5px;
+}
+.messageBoxImage{
+  display: block;
+}
+.messageBoxImage div{
+    display: block;
+}
+.messageBoxImage span{
+    position: relative;
+    display: flex;
+    right: unset;
+    bottom: unset;
+    justify-content: end;
+}
+.messageBoxImage img{
+    max-width:100%;
+    transition: all .5s;
+    max-height:200px;
+}
+.messageBoxImage img:hover{
+    transform: scale(1.04);
+}
+.imageContainer{
+    position: fixed;
+    left: 0;
+    top:0;
+    z-index: 100;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.207);
+}
+.imageContainer img{
+    max-width: 80vw;
+    max-height: 80vh;
+}
+.bold{
+    font-weight: 700;
+   
 }

@@ -6,6 +6,7 @@ import "./loginSignup.css";
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [file, setFile] = useState(null)
   const [state, setState] = useState({
     name: "",
     username: "",
@@ -19,8 +20,19 @@ export default function Signup() {
 
   //   console.log(localStorage.getItem("abc@gmail.com")==null)
   const submitButton = async () => {
-    let userDetails = { name: state.name, username: state.username, email: state.email, password: state.password }
-    let obj = await axios.post("http://localhost:4500/signup", userDetails)
+
+    let userDetails = { name: state.name, username: state.username, email: state.email, password: state.password, photo: file }
+    const data = new FormData()
+    data.append("image", file)
+    data.append("name", state.name)
+    data.append("email", state.email)
+    data.append("password", state.password)
+    data.append("username", state.username)
+    let obj = await axios.post("http://localhost:4500/signup", data, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
     let user = obj.data.user
     console.log(obj);
     if (user == null) {
@@ -82,9 +94,13 @@ export default function Signup() {
           onChange={changeInput}
         />
       </div>
+      <input type="file" name="profile" accept="image/*" onChange={e => {
+        const fileUpload = e.target.files[0]
+        console.log();
+        setFile(fileUpload)
+      }} />
 
-
-      <button className="btn btn-danger" onClick={submitButton}>
+      <button className="btn btn-danger" onClick={submitButton} >
         submit
       </button>
     </div>

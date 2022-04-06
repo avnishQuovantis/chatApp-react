@@ -18,7 +18,8 @@ function Join() {
         console.log("inside handle");
         console.log(obj);
         if (user) {
-            let userData = { id: user._id, username: user.username, name: user.name, email: user.email, token: user.token }
+            let userData = { id: user._id, profile: user.profile, username: user.username, name: user.name, email: user.email, token: user.token }
+
             dispatch({ type: LOGIN, payload: userData })
             dispatch({ type: CHATS, payload: user.chats })
             navigate("/chats")

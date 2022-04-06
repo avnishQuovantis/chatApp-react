@@ -12,80 +12,18 @@
     height: 100%;
     width: 100%;}
 
-    .chatContainer{
-    
-    background-color: white;
-    width: 45%;
-    height: 100%;
-}
+   
 .userList{
     width: 27%;
     background-color: white;
 }
-.header{
-    background-color: white;
-    height: 10%;
-    display: flex;
-    border-bottom: 2px solid whitesmoke;
-    align-items: center;
-    justify-content: space-around;
-}
-.header h2{
-    color:black;
-    font-family: "Roboto";
-    
-}
-.header img{
-    margin:2.5vmax;
-    transition: all .5s;
-    width: 2rem;
-    /* background-color: white; */
-}
-.header img:hover{
-    transform: scale(1.1);
-}
-.chatBox{
-    /* border:0.2vmax solid black; */
-    height: 78%;
-    box-sizing: border-box;
-    overflow-y:auto;
-    background: white;
-}
-.inputBox{
-    border-top:0.2vmax solid rgba(0, 0, 0, 0.124) ;
-    height: 12%;
-    box-sizing: border-box;
-    display: flex;
-}
 
 
-#chatInput{
-    width: 80%;
-    border:none;
-    background-color: white;
-    padding: 2vmax;
-    box-sizing: border-box;
-    outline: none;
-    font-size: 1.2vmax;
-    font-family: 'Roboto';
-}
-#sendBtn{
-    background-color: crimson;
-    color:white;
-    width: 21%;
-    border: none;
-}
 
-#sendBtn:hover{
-    opacity: 0.97;
-}
-#sendBtn > img{
-    width: 2rem;
-}
 .groupList{
     width: 27%;
     height: 100%;
-    background: whitesmoke;
+    background: white;
 }
 
 .groupList__groups{
@@ -98,7 +36,7 @@
 .groupList__groups__heading{
     width: 100%;
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;    text-align: center; */
-    border-bottom: 2px solid lightgray;
+    border-bottom: 2px solid whitesmoke;
     padding: 0.5rem;
     font-size: 1.5rem;
     text-align: center;
@@ -119,4 +57,34 @@
     height: 2rem;
     border-radius: 100%;
     margin-right: 0.7rem;
+}
+.groupList__peope{
+    
+    min-height: 50vh;
+    width: 90%;
+    margin: 1rem auto;
+}
+.groupList__people__heading{
+    width: fit-content;
+    border-bottom: 2px solid whitesmoke;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgb(51, 50, 50);
+    display: block;
+    margin: auto;
+}
+.groupList__people__online{
+    background: ghostwhite;
+    margin:0.5rem ;
+    padding: 0.5rem;
+    font-size: 2vmax;
+    transition:0.5s all;
+    display: flex;
+    align-items: center;
+}
+.groupList__people__online > img{
+    width: 2rem;
+    margin-right:0.7rem;
+    border-radius: 100%;
 }
