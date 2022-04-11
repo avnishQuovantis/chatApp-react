@@ -1,0 +1,77 @@
+.profileContainer{
+    width: 100vw;
+    height: 100vh;
+    background-color: silver;
+}
+.backBtn{
+    position:absolute;
+    left: 2rem;
+    top:2rem;
+    background: white;
+    border-radius: 100%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.profile{
+    
+    position: relative;
+    width: 50%;
+    height: 100%;
+    background-color: whitesmoke;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile__pic{
+    border-radius: 100%;
+    width: 23vw;
+    height: 23vw;
+    top: 3rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    position: relative;
+}
+.profile__details{
+    width: 70%;
+    max-width: 500px;
+    font-family: Poppins;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 46vh;
+    justify-content: space-evenly;
+    padding: 3rem 0.6rem;
+    flex-wrap: wrap;
+    font-family: "Poppins";
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.profile__details h4{
+    font-size: 3vmax;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+}
+.profile__details > *{
+    font-size: 1.5vmax;
+    width: 100%;
+    word-break: break-all;
+    margin: 0.5rem 0;
+}
+.profile__details > div:nth-child(2){
+    color:gray;
+    font-size: 2vmax;
+    text-align: center;
+}
+td,th{
+    padding:0.7rem 0.5rem;
+}
+td{
+    text-align: end;
+    width: 55%;
+}
+.brown-text{
+    color:brown
+}
+.blue-text{
+    color:blue
+}

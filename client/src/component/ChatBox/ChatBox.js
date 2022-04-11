@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux'
 import "./Chatbox.css"
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-function ChatBox({ socket, selectedUser }) {
+function ChatBox({ socket, selectedUser, usersOnline }) {
     const user = useSelector(state => state.auth.currUser)
     const messages = useSelector(state => state.main.currentChat)
     const [message, setMessage] = useState("")
-
+    let isOnline = usersOnline.find(obj => obj.id == selectedUser.id)
     const [image, setImage] = useState(null)
     const sendPrivateMessage = () => {
         console.log(selectedUser);
@@ -22,16 +22,27 @@ function ChatBox({ socket, selectedUser }) {
             setMessage("")
         } else {
             console.log(image);
-            socket.emit("sendImagePrivate", { content: image, to: selectedUser, type: "image", from: user, mimetype: image.type })
+            if (image.type.includes("image")) {
+                socket.emit("sendImagePrivate", { content: image, to: selectedUser, type: "image", from: user, name: image.name, mimetype: image.type })
+            } else {
+                let mimetype = image.name.split(".")
+                console.log("mime type of file", mimetype);
+                socket.emit("sendImagePrivate", { content: image, to: selectedUser, type: "file", from: user, name: image.name, mimetype: mimetype[1] })
+            }
             setImage(null)
+            setMessage("")
         }
     }
 
     return (
         <div className='chatContainer'>
-            <div className='header'>
+            <div className='chatHeader'>
                 <img className='chatContainerImage' src={`http://localhost:4500/profile/dp/${selectedUser.profile}`} />
-                <h2>{selectedUser.username} </h2>
+                <div className='chatHeader__text'>
+                    <div><h5>{selectedUser.username} </h5><span className={`onlineStatus ${isOnline !== undefined && 'online'}`}></span></div>
+                    <div>{isOnline === undefined ? selectedUser["seen"] : "online"}</div>
+
+                </div>
             </div>
             <ReactScrollToBottom className='chatBox'>
                 {console.log(messages)}
@@ -61,6 +72,16 @@ function ChatBox({ socket, selectedUser }) {
             <div className='inputBox'>
                 <input onKeyDown={e => e.key == "Enter"} onChange={e => setMessage(e.target.value)} value={message} type="text" id="chatInput" />
 
+                <div class="fileInput-container">
+                    <input type="file" id="fileInput" class="fileInput" accept='application/pdf,application/vnd.ms-excel,.docx,.doc'
+                        onChange={e => {
+                            let imagefile = e.target.files[0]
+                            console.log(imagefile);
+                            setImage(imagefile)
+                            setMessage(imagefile.name)
+                        }} />
+                    <label for="fileInput" className='fileLabel'><i class="bi bi-paperclip"></i></label>
+                </div>
                 <div class="imageInput-container">
                     <input type="file" id="imageInput" class="imageInput" accept='image/*'
                         onChange={e => {

@@ -1,10 +1,10 @@
-import { USER_ONLINE, CHATS, SELECT_USER, CURRENT_CHAT } from "../descriptor/descriptors"
-
+import { USER_ONLINE, CHATS, SELECT_USER, CURRENT_CHAT, LAST_SEEN, UPDATE_CHATS } from "../descriptor/descriptors"
+import authReducer from "./authReducer"
 let initialState = {
     userOnline: [],
     chats: [],
     selectedUser: null,
-    currentChat: []
+    currentChat: [],
 }
 
 const mainReducer = (state = initialState, action) => {
@@ -16,9 +16,17 @@ const mainReducer = (state = initialState, action) => {
                 selectedUser: action.payload
             }
         case USER_ONLINE:
+            console.log(action.payload);
+            let obj1 = null
+            if (state.selectedUser != null) {
+                obj1 = { ...state.selectedUser, seen: action.payload.lastSeen }
+            } else {
+                obj1 = null
+            }
             return {
                 ...state,
-                userOnline: action.payload
+                userOnline: action.payload.users,
+                selectedUser: obj1
             }
 
         case CHATS:
@@ -29,11 +37,39 @@ const mainReducer = (state = initialState, action) => {
             }
         case CURRENT_CHAT:
             console.log(action.payload);
-            let obj = (action.payload == undefined || action.payload == [] || action.payload["messages"] == undefined) ? [] : action.payload["messages"]
-            console.log(obj);
+            let obj = [...state.currentChat]
+            console.log(action.payload);
+
+            obj = (action.payload == undefined || action.payload == [] || action.payload["messages"] == undefined) ? [] : action.payload["messages"]
+            console.log("inside CurrentChat if", obj);
             return {
                 ...state,
-                currentChat: obj
+                currentChat: obj,
+            }
+
+
+        case LAST_SEEN:
+            let newSelectedUser = { ...state.selectedUser, seen: action.payload }
+            return {
+                ...state,
+                selectedUser: newSelectedUser
+            }
+        case UPDATE_CHATS:
+            const { message, from, to, user } = action.payload
+            let newChats = []
+            console.log(from);
+
+            console.log("newChats is ", newChats);
+            let obj2 = [...state.currentChat]
+            if (state.selectedUser.id == from.id || state.selectedUser == to.id || user.id == from.id) {
+                obj2 = message["messages"]
+                console.log(obj2);
+            }
+
+            return {
+                ...state,
+                currentChat: obj2,
+                chats: newChats
             }
         default: return state
     }

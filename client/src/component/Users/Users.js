@@ -1,6 +1,7 @@
 import React from 'react'
 import "./Users.css"
 import { useSelector } from "react-redux"
+import Dropdown from '../dropdown/Dropdown'
 function Users({ usersOnline, image, selectUser, name, id, socketId }) {
 
     const chats = useSelector(state => state.main.chats)
@@ -12,6 +13,7 @@ function Users({ usersOnline, image, selectUser, name, id, socketId }) {
                 <div className='userList__heading__right'>
                     {name}
                 </div>
+                <Dropdown />
             </div>
             <input type="text" className='userList__search' placeholder='&#128269; Search friends' />
             {

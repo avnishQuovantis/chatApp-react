@@ -13,18 +13,31 @@ const Message = ({ username, message, classs, item, index, time, type }) => {
         )
     }
     else if (type != 'text') {
-        return (
-            <div className={`messageBox ${classs} messageBoxImage`}>
-                <div className='messageBoxName bold'>
-                    {`${username == '' ? 'you' : username}:`}
+        if (type == "image") {
+            return (
+                <div className={`messageBox ${classs} messageBoxImage`}>
+                    <div className='messageBoxName bold'>
+                        {`${username == '' ? 'you' : username}:`}
+                    </div>
+                    <img src={`http://localhost:4500/posts/images/${message}`}
+                        // onClick={() => {saveAs(`http://localhost:4500/posts/images/${message}`)}}
+                        onClick={() => { setOpen(true) }}
+                    />
+                    <span>{time}</span>
                 </div>
-                <img src={`http://localhost:4500/posts/images/${message}`}
-                    // onClick={() => {saveAs(`http://localhost:4500/posts/images/${message}`)}}
-                    onClick={() => { setOpen(true) }}
-                />
-                <span>{time}</span>
-            </div>
-        )
+            )
+
+        }
+        else {
+            return (
+                <div className={`messageBox ${classs} `}  >
+                    <div className='bold'>{`${username == '' ? 'you' : username}:`}</div>
+                    {console.log(message)}
+                    <a href={`http://localhost:4500/posts/images/${message}`} ><i class="bi bi-file-earmark"></i>{message.split("__")[1].split("---")[1]}</a>
+                    <span >{time}</span>
+                </div>
+            )
+        }
     } else {
         return (
             <div className={`messageBox ${classs}`} >

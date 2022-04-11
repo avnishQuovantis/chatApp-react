@@ -12,6 +12,7 @@ export default function Signup() {
     username: "",
     email: "",
     password: "",
+    status: "busy",
   });
   const changeInput = (e) => {
     // console.log(e.target.name,e.target.value);
@@ -28,6 +29,7 @@ export default function Signup() {
     data.append("email", state.email)
     data.append("password", state.password)
     data.append("username", state.username)
+    data.append("status", state.status)
     let obj = await axios.post("http://localhost:4500/signup", data, {
       headers: {
         'content-type': 'multipart/form-data'
@@ -91,6 +93,16 @@ export default function Signup() {
           type="password"
           class="form-control"
           placeholder="password"
+          onChange={changeInput}
+        />
+      </div>
+      <div>
+        <h5>Status </h5>
+        <input name="status"
+          value={state.status}
+          type="text"
+          class="form-control"
+          placeholder="status"
           onChange={changeInput}
         />
       </div>

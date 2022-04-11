@@ -1,0 +1,14 @@
+.NoChatContainer{
+    width: 45%;
+    height: 100%;
+    background-color: ghostwhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.NoChatContainer >div{
+    font-size: 2rem;
+    color: black;
+    width:80%;
+
+}

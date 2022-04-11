@@ -20,9 +20,16 @@ background-color: blue;
 color:white;
 
 }
+.right a{
+    color:white
+}
 .left{
     float:left;
 background-color: ghostwhite
+
+}
+.left a{
+    color:blue;
 
 }
 .messageBox span{
@@ -31,6 +38,10 @@ background-color: ghostwhite
      right: 5px;
     bottom: 5px;
 }
+.messageBox a{
+    display: block;
+}
+
 .messageBoxImage{
   display: block;
 }
@@ -72,3 +83,4 @@ background-color: ghostwhite
     font-weight: 700;
    
 }
+

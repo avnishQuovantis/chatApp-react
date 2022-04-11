@@ -5,19 +5,43 @@
     height: 100%;
     position:relative;
 }
-.header{
+.chatHeader{
     background-color: white;
     height: 13%;
     display: flex;
     border-bottom: 2px solid whitesmoke;
     align-items: center;
 }
-.header h2{
+
+.chatHeader__text{
+    font-family: "Poppins";
+    width: 100%;
     color:black;
-    font-family: "Roboto";
-    
 }
-.header img{
+.chatHeader__text h5{
+    margin: 0;
+    font-size: 2.3vmax;
+    
+    font-weight: 700;
+    margin-right:1rem;
+}
+.chatHeader__text > div:first-child{
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+}
+.onlineStatus{
+    border-radius:100%;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid black;
+}
+.online{
+    background-color: lightgreen;
+    border: none;
+}
+.chatHeader img{
     margin:2.5vmax;
     transition: all .5s;
     width: 2rem;
@@ -69,17 +93,17 @@ transition: all 0.5s;
 #sendBtn > img{
     width: 2rem;
 }
-.imageInput-container{
+.imageInput-container,.fileInput-container{
     position: relative;
 }
-#imageInput{
+#imageInput , #fileInput{
     opacity: 0;
     width: 0.2rem;
     height: 0.2rem;
     position: absolute;
 }
 
-.imageLabel{
+.imageLabel,.fileLabel{
     display: flex;
   position: relative;
   justify-content: center;
@@ -92,12 +116,14 @@ font-weight: bold;
   font-size: 2rem;
   padding: 0 0.4rem;
   transition: transform .2s ease-out;
-
 }
-#imageInput:hover + .imageLabel,
-#imageInput:focus + .imageLabel {
+#imageInput:hover + .imageLabel,#imageInput:focus + .imageLabel ,
+#fileInput:hover + .fileLabel,
+#fileInput:focus + .fileLabel {
   transform: scale(1.02);
 }
+
+
 
 .chatContainerImage{
     border: 100%;
