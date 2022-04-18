@@ -1,11 +1,16 @@
 const moment = require('moment');
+const { signoff } = require('../functions/userFunctions');
 let users = [];
 let messages = {}
 // Join user to chat
 function userJoin(id, socketId, username, email, name, profile) {
-  const user = { id, socketId, username, email, name, profile };
+  const time = moment().format("h:mm a")
+  const user = { id, socketId, username, email, name, profile, time };
+  let obj = users.find(obj => obj.id == id)
 
-  users.push(user);
+  if (obj == undefined) {
+    users.push(user);
+  }
   console.log(user);
   return user;
 }
@@ -15,20 +20,25 @@ function getCurrentUser(id) {
 
   return users.find(user => user.id === id);
 }
+function getCurrentUserBySocketId(id) {
+  return users.find(user => user.socketId === id)
+}
 
 //getAllUsSer onl
 function getUsersOnline() {
   return users
 }
 // User leaves chat
-function userLeave(socketId) {
+async function userLeave(socketId) {
   const index = users.findIndex(user => user.socketId === socketId);
 
   if (index !== -1) {
+    let getUser = getCurrentUserBySocketId(socketId)
+    await signoff(getUser.id)
     let user = users[index]
     users = users.filter((obj, i) => i != index)
     console.log("users leaves", users);
-    return user
+    return { user, lastSeen: moment().format("h:mm a") }
   }
 }
 
@@ -44,6 +54,6 @@ module.exports = {
   getCurrentUser,
   userLeave,
   getRoomUsers,
-
+  getCurrentUserBySocketId,
   getUsersOnline
 };

@@ -55,15 +55,15 @@ async function getChat(user, to) {
     try {
         console.log("inside getChat user ", user);
         let getAllData = await userModel.findById(user).select("chats")
-
+        let lastSeen = await userModel.findById(to).select("seen")
+        console.log("last  seen", lastSeen);
         console.log("inside All Chats ", getAllData);
         let getUserChat = getAllData.chats.find(obj => obj.id == to)
         console.log("chat = ", getUserChat);
         if (getUserChat === undefined) {
             return []
         } else {
-
-            return getUserChat
+            return { getUserChat, lastSeen }
         }
 
     } catch (Err) { }

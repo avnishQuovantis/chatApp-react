@@ -6,7 +6,8 @@ const { handleErrors, createToken } = require("./helperFn")
 const path = require("path")
 const { log } = require("console")
 const Blob = require("node-blob")
-// const { URL } = require("url")
+const moment = require("moment")
+const { findByIdAndUpdate } = require("../database/userModel")
 async function login(req, res) {
     const { email, password } = req.body
     try {
@@ -33,7 +34,7 @@ async function signUp(req, res) {
         let checkEmail = await userModel.findOne({ email: req.body.email })
         console.log(checkEmail);
         if (checkEmail == null) {
-            const obj = { username: req.body.name, name: req.body.name, password: req.body.password, email: req.body.email, profile: null }
+            const obj = { username: req.body.name, name: req.body.name, seen: "", password: req.body.password, status: req.body.status, email: req.body.email, profile: null }
 
             if (req.file) {
                 let fileLocation = path.resolve(__dirname, "../files/profiles" + req.file.filename)
@@ -95,6 +96,27 @@ async function getProfilePhoto(req, res) {
         res.status(500).json({ user: null })
     }
 }
+async function getUserDetails(req, res) {
+    try {
 
+        const { id } = req.params
+        const userDetails = await userModel.findById(id)
+        const user = { id: id, name: userDetails.name, username: userDetails.username, email: userDetails.email, status: userDetails.status, profile: userDetails.profile }
+        console.log("getUser fetails ", user);
+        res.status(200).json({ user: user })
+    } catch (error) {
+        res.status(500).json({ user: null })
+    }
 
-module.exports = { login, signUp, getUser, updateUser, getProfilePhoto }
+}
+async function signoff(id) {
+    try {
+        console.log(id);
+        await userModel.findByIdAndUpdate(id, { seen: moment().format(" h:mm a") })
+        console.log("signoff time", obj);
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+module.exports = { login, signUp, getUser, getUserDetails, updateUser, getProfilePhoto, signoff, }

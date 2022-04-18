@@ -1,9 +1,10 @@
 const fs = require('fs')
 const path = require("path")
 
-async function storeImage(from, to, content, mimetype) {
-    const type = mimetype.split('/')
-    const filename = from.id + "-" + Date.now() + "." + type[1]
+async function storeImage(from, to, content, mimetype, name) {
+
+
+    const filename = Date.now() + "---" + name
     console.log("filename - ", filename);
     let foldername = ""
     if (fs.existsSync(path.join(__dirname, "..", "/files/posts/" + from.id + "-" + to.id))) {

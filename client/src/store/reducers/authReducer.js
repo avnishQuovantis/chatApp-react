@@ -1,10 +1,11 @@
-import { LOGIN, SIGN_UP, SIGN_OUT, GET_USER, EDIT_USER, LOADING, SET_SOCKET_ID } from "../descriptor/descriptors";
+import { LOGIN, SIGN_UP, SIGN_OUT, GET_USER, EDIT_USER, LOADING, SET_SOCKET_ID, SET_SOCKET } from "../descriptor/descriptors";
 
 let initialState = {
     loading: true,
     currUser: null,
     error: false,
-    socketId: ""
+    socketId: "",
+    socket: null
 };
 
 const authReducer = (state = initialState, action) => {
@@ -52,7 +53,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 currUser: newUser,
             };
-
+        case SET_SOCKET:
+            console.log("socket ", action.payload);
+            return {
+                ...state,
+                socket: action.payload
+            }
         default:
             return state;
     }

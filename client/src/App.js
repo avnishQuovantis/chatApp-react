@@ -6,7 +6,7 @@ import Login from './component/Login/Login';
 import Chat from './component/Chat/Chat';
 import Signup from './component/Signup/Signup';
 import Profile from './component/Profile/Profile';
-
+import UserProfile from "./component/UserProfile/UserProfile"
 function App() {
 
   return (
@@ -19,6 +19,7 @@ function App() {
           <Route path="/chats" element={<Chat />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="userprofile/:id" element={<UserProfile></UserProfile>} />
         </Routes>
       </Router>
     </div>

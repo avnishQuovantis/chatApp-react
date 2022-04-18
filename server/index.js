@@ -11,9 +11,10 @@ const { userJoin,
     getCurrentUser,
     userLeave, getUsersOnline,
     getRoomUsers,
+    getCurrentUserBySocketId,
 } = require("./utils/users")
 const storeImage = require("./functions/storeImage")
-const { login, signUp, getUser, updateUser, getProfilePhoto } = require("./functions/userFunctions")
+const { login, signUp, getUser, updateUser, getProfilePhoto, signoff, getUserDetails } = require("./functions/userFunctions")
 const { getChats, saveChats, getChat, getChatImage } = require("./functions/itemFunctions")
 const port = 4500 || process.env.port
 
@@ -53,8 +54,9 @@ app.post("/signup", upload.single("image"), signUp)
 
 app.get("/chats", getChats)
 app.get("/profile/dp/:id", getProfilePhoto)
-
+app.get("/userprofile/:id", getUserDetails)
 app.get("/posts/images/:id", getChatImage)
+app.get("/users/:id",)
 //pass app to http.create server to create server
 const server = http.createServer(app)
 
@@ -80,9 +82,9 @@ io.on("connection", (socket) => {
             io.to(to.socketId).to(socket.id).emit("privateMessage", { from: user, message: message, to: getUser })
         })
 
-        socket.on("sendImagePrivate", async ({ content, to, from, type, mimetype }) => {
+        socket.on("sendImagePrivate", async ({ content, to, from, type, mimetype, name }) => {
             console.log("inside sendImagePrivate", content);
-            const filename = await storeImage(from, to, content, mimetype)
+            const filename = await storeImage(from, to, content, mimetype, name)
             console.log("filename -" + filename);
             const getUser = getCurrentUser(to.id)
             let message = await saveChats(from, to, filename, type, mimetype)
@@ -91,15 +93,16 @@ io.on("connection", (socket) => {
         })
         socket.on("userChat", async ({ user, to }) => {
             console.log(user);
-            let getUserChat = await getChat(user.id, to.id)
+            let { getUserChat, lastSeen } = await getChat(user.id, to.id)
             console.log("getUserChat", getUserChat);
-            socket.emit("getUserChat", { to: to, chat: getUserChat })
+            socket.emit("getUserChat", { to: to, chat: getUserChat, lastSeen: lastSeen.seen })
         })
 
 
-        socket.on('disconnect', () => {
-            userLeave(socket.id)
-            socket.broadcast.emit('leave', { user: "Admin", users: getUsersOnline(), message: `  has left` });
+        socket.on('disconnect', async () => {
+
+            let { user, lastSeen } = await userLeave(socket.id)
+            socket.broadcast.emit('leave', { user, users: getUsersOnline(), message: `${user.username}  has left`, lastSeen: lastSeen });
             console.log(`user left`);
         })
     })

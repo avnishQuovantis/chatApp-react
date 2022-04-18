@@ -74,6 +74,10 @@
     display: block;
     margin: auto;
 }
+a{
+    color:black;
+    text-decoration: none;
+}
 .groupList__people__online{
     background: ghostwhite;
     margin:0.5rem ;

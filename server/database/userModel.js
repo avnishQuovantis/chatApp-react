@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "please enter a password"],
     },
+    status: { type: String },
     token: {
         type: String
     },
@@ -31,7 +32,8 @@ const userSchema = new mongoose.Schema({
     groups: { type: Array },
     profile: {
         type: String
-    }
+    },
+    seen: { type: String }
 })
 
 //save password in hashed form

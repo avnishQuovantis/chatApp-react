@@ -8,7 +8,7 @@ import jsLogo from "../../images/js-logo.jpg"
 import javaLogo from "../../images/java-logo.jpg"
 import pythonLogo from "../../images/python-logo.png"
 import { useDispatch, useSelector } from 'react-redux'
-import { CURRENT_CHAT, LAST_SEEN, SELECT_USER, SET_SOCKET_ID, UPDATE_CHATS, USER_ONLINE } from '../../store/descriptor/descriptors'
+import { CURRENT_CHAT, SET_SOCKET, LAST_SEEN, SELECT_USER, SET_SOCKET_ID, UPDATE_CHATS, USER_ONLINE } from '../../store/descriptor/descriptors'
 import ChatBox from '../ChatBox/ChatBox'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import NoChat from '../NoChat/NoChat'
@@ -39,10 +39,13 @@ function Chat() {
     useEffect(() => {
         socket = socketIO(ENDPOINT, { transports: ["websocket"] })
         console.log(user);
+
         socket.emit("join", { userr: user })
+        dispatch({ type: SET_SOCKET, payload: socket })
         socket.on("welcome", (data) => {
             if (user == null) {
                 alert(data.message);
+
                 dispatch({ type: SET_SOCKET_ID, payload: data.user.socketId })
                 console.log(data);
             }
@@ -70,8 +73,11 @@ function Chat() {
 
         socket.on("privateMessage", ({ from, message, to }) => {
             console.log("inside private message", from, to);
-            dispatch({ type: UPDATE_CHATS, payload: { message, from, to, user } })
+            dispatch({ type: UPDATE_CHATS, payload: { to: to, from: from, message: message, user: user } })
+            if (from.id == user.id || to.id == user.id) {
+                dispatch({ type: CURRENT_CHAT, payload: message })
 
+            }
         })
         return () => {
 
@@ -99,7 +105,7 @@ function Chat() {
 
                 {
                     selectedUser == null ? <NoChat /> :
-                        <ChatBox socket={socket} usersOnline={usersOnline} selectedUser={selectedUser} />
+                        <ChatBox usersOnline={usersOnline} selectedUser={selectedUser} />
                 }
 
                 <div className='groupList'>

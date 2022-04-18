@@ -61,7 +61,8 @@ const mainReducer = (state = initialState, action) => {
 
             console.log("newChats is ", newChats);
             let obj2 = [...state.currentChat]
-            if (state.selectedUser.id == from.id || state.selectedUser == to.id || user.id == from.id) {
+            console.log(to, from);
+            if (state.selectedUser.id == from.id || user.id == from.id) {
                 obj2 = message["messages"]
                 console.log(obj2);
             }
@@ -69,7 +70,7 @@ const mainReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentChat: obj2,
-                chats: newChats
+
             }
         default: return state
     }
