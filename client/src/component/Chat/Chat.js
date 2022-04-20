@@ -8,7 +8,7 @@ import jsLogo from "../../images/js-logo.jpg"
 import javaLogo from "../../images/java-logo.jpg"
 import pythonLogo from "../../images/python-logo.png"
 import { useDispatch, useSelector } from 'react-redux'
-import { CURRENT_CHAT, SET_SOCKET, LAST_SEEN, SELECT_USER, SET_SOCKET_ID, UPDATE_CHATS, USER_ONLINE } from '../../store/descriptor/descriptors'
+import { CURRENT_CHAT, SET_SOCKET, LAST_SEEN, SELECT_USER, SET_SOCKET_ID, UPDATE_CHATS, USER_ONLINE, SET_ALLUSERS } from '../../store/descriptor/descriptors'
 import ChatBox from '../ChatBox/ChatBox'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import NoChat from '../NoChat/NoChat'
@@ -21,17 +21,18 @@ function Chat() {
     // const [messages, setMessages] = useState([])
     const selectedUser = useSelector(state => state.main.selectedUser)
     const chats = useSelector(state => state.main.chats)
+    const allUsers = useSelector(state => state.main.allUsers)
     const [usersOnline, setUsersOnline] = useState([])
     const selectUser = (id) => {
 
         let currentUser = usersOnline.find(userr => userr.id === id)
         if (currentUser == undefined) {
             currentUser = chats.find(userr => userr.id === id)
-            currentUser["isOnline"] = false
+            // currentUser["isOnline"] = false
         } else {
-            currentUser["isOnline"] = true
+            // currentUser["isOnline"] = true
         }
-
+        console.log("selct susers", currentUser);
         socket.emit("userChat", { user: user, to: currentUser })
         dispatch({ type: SELECT_USER, payload: currentUser })
     }
@@ -43,9 +44,10 @@ function Chat() {
         socket.emit("join", { userr: user })
         dispatch({ type: SET_SOCKET, payload: socket })
         socket.on("welcome", (data) => {
+            console.log("Welcome ", data.users);
+            dispatch({ type: SET_ALLUSERS, payload: data.users })
             if (user == null) {
                 alert(data.message);
-
                 dispatch({ type: SET_SOCKET_ID, payload: data.user.socketId })
                 console.log(data);
             }
@@ -124,15 +126,21 @@ function Chat() {
                     </div>
                     <div className='groupList__groups'>
                         <div className='groupList__groups__heading'>
-                            <span><i class="bi bi-people-fill"></i> Groups</span>
+                            <span><i class="bi bi-people-fill"></i> All people</span>
                         </div>
-                        <div className="groupList__groups__group">
-                            <img src={jsLogo} />  <span>Javascipt</span>
-                        </div>
-                        <div className="groupList__groups__group">
-                            <img src={javaLogo} /><span> java</span></div>
-                        <div className="groupList__groups__group">
-                            <img src={pythonLogo} /> <span> Python</span>
+                        <div className='groupList__groups__list'>
+                            {
+                                allUsers.map(userr => {
+                                    console.log(allUsers)
+                                    return (
+                                        userr._id != user.id
+                                        && <div className="groupList__groups__group" onClick={() => selectUser(userr._id)}>
+                                            <img src={userr.profile != "" && `http://localhost:4500/profile/dp/${userr.profile}`} />  <span>{userr.name}</span>
+                                        </div>
+                                    )
+                                })
+                            }
+
                         </div>
                     </div>
                 </div>

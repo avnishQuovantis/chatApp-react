@@ -118,5 +118,11 @@ async function signoff(id) {
         console.log(err.message);
     }
 }
+async function getOtherUsers(req, res) {
+    try {
 
-module.exports = { login, signUp, getUser, getUserDetails, updateUser, getProfilePhoto, signoff, }
+    } catch (error) {
+
+    }
+}
+module.exports = { login, signUp, getUser, getUserDetails, updateUser, getProfilePhoto, signoff }

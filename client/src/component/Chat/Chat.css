@@ -28,7 +28,6 @@
 
 .groupList__groups{
     
-    min-height: 20vh;
     width: 90%;
     margin: 1rem auto;
     
@@ -42,6 +41,11 @@
     text-align: center;
     color:rgb(51, 50, 50);
     margin: 1rem auto;
+}
+.groupList__groups__list{
+    width: 100%;
+  height: 30vh;
+    overflow-y: auto;
 }
 .groupList__groups__group{
     font-size: 1.3;

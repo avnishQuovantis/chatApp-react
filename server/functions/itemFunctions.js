@@ -80,7 +80,30 @@ function getChatImage(req, res) {
         console.log(err);
         res.status(500).json({ user: null })
     }
-
-
 }
-module.exports = { getChats, saveChats, getChat, getChatImage }
+async function getAllUsers() {
+    try {
+        let allUsers = []
+        for await (let doc of userModel.find({}, { password: 0, chats: 0, groups: 0 })) {
+            let obj = { name: doc.name, username: doc.username, status: doc.status, email: doc.email, id: doc._id, seen: doc.seen, profile: doc.profile }
+            console.log("doc ", obj);
+
+            allUsers.push(doc)
+        }
+        return allUsers
+    } catch (err) {
+        console.log();
+    }
+}
+async function searchUser(req, res) {
+    try {
+        const { id } = req.params
+        let user = await userModel.find({ name: { "$regex": id, "$options": "i" }, username: { "$regex": id, "$options": "i" } }, { password: 0, chats: 0, groups: 0 })
+        console.log("search user ", user);
+        res.status(200).json({ user: user, message: "user" })
+    } catch (error) {
+        res.status(500).json({ user: null, message: error.message })
+
+    }
+}
+module.exports = { getChats, saveChats, getChat, getChatImage, getAllUsers, searchUser }

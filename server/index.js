@@ -15,7 +15,7 @@ const { userJoin,
 } = require("./utils/users")
 const storeImage = require("./functions/storeImage")
 const { login, signUp, getUser, updateUser, getProfilePhoto, signoff, getUserDetails } = require("./functions/userFunctions")
-const { getChats, saveChats, getChat, getChatImage } = require("./functions/itemFunctions")
+const { getChats, saveChats, getChat, getChatImage, getAllUsers, searchUser } = require("./functions/itemFunctions")
 const port = 4500 || process.env.port
 
 const app = express()
@@ -50,13 +50,16 @@ const upload = multer({
 
 
 
+
 app.post("/signup", upload.single("image"), signUp)
 
 app.get("/chats", getChats)
 app.get("/profile/dp/:id", getProfilePhoto)
 app.get("/userprofile/:id", getUserDetails)
 app.get("/posts/images/:id", getChatImage)
-app.get("/users/:id",)
+app.get("/user/:id", searchUser)
+// app.get("/users", getAllUsers)
+
 //pass app to http.create server to create server
 const server = http.createServer(app)
 
@@ -67,11 +70,13 @@ const io = socketIO(server)
 // app.pos
 io.on("connection", (socket) => {
 
-    socket.on("join", ({ userr }) => {
+    socket.on("join", async ({ userr }) => {
         const { email, username, id, name, profile } = userr
 
         const user = userJoin(id, socket.id, username, email, name, profile)
-        socket.emit("welcome", { from: "admin", message: "Welcome to chat", user: user })
+        const allUsers = await getAllUsers()
+        console.log(" all users ", allUsers);
+        socket.emit("welcome", { from: "admin", message: "Welcome to chat", user: user, users: allUsers })
         io.emit("userJoined", { message: "user has joined", user: user, currentUsers: getUsersOnline() })
 
         socket.on("sendPrivateMessage", async ({ content, to, from, type }) => {

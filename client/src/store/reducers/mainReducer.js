@@ -1,10 +1,11 @@
-import { USER_ONLINE, CHATS, SELECT_USER, CURRENT_CHAT, LAST_SEEN, UPDATE_CHATS } from "../descriptor/descriptors"
+import { USER_ONLINE, CHATS, SELECT_USER, CURRENT_CHAT, LAST_SEEN, UPDATE_CHATS, SET_ALLUSERS } from "../descriptor/descriptors"
 import authReducer from "./authReducer"
 let initialState = {
     userOnline: [],
     chats: [],
     selectedUser: null,
     currentChat: [],
+    allUsers: []
 }
 
 const mainReducer = (state = initialState, action) => {
@@ -71,6 +72,11 @@ const mainReducer = (state = initialState, action) => {
                 ...state,
                 currentChat: obj2,
 
+            }
+        case SET_ALLUSERS:
+            return {
+                ...state,
+                allUsers: action.payload
             }
         default: return state
     }
