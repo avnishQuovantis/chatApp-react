@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import "./Users.css"
 import { useSelector } from "react-redux"
 import Dropdown from '../dropdown/Dropdown'
+import useSelect from "../useSelect"
 import axios from "axios"
-function Users({ usersOnline, image, selectUser, name, id, socketId }) {
+function Users({ usersOnline, image, name, id, socketId }) {
 
     const { chats, allUsers } = useSelector(state => state.main)
     const [searchUsers, setSearchUsers] = useState(null)
     const [searchValue, setSearchValue] = useState("")
-
+    const { selectUser } = useSelect()
     const search = () => {
         console.log("inside search");
         if (searchValue == "")
@@ -49,7 +50,17 @@ function Users({ usersOnline, image, selectUser, name, id, socketId }) {
                     placeholder='&#128269; Search friends' se />
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={search}><i class="bi bi-search"></i></button>
             </div>
-
+            <div className="userList__tabs">
+                <button className='btn'>
+                    chats
+                </button>
+                <button className='btn'>
+                    all
+                </button>
+                <button className='btn'>
+                    online
+                </button>
+            </div>
             {
                 searchUsers != null ?
                     searchUsers.map(users => {

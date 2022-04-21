@@ -24,10 +24,12 @@ function Chat() {
     const allUsers = useSelector(state => state.main.allUsers)
     const [usersOnline, setUsersOnline] = useState([])
     const selectUser = (id) => {
-
+        console.log(allUsers);
         let currentUser = usersOnline.find(userr => userr.id === id)
         if (currentUser == undefined) {
-            currentUser = chats.find(userr => userr.id === id)
+            // currentUser = chats.find(userr => userr.id === id)
+            currentUser = allUsers.find(userr => userr.id == id)
+
             // currentUser["isOnline"] = false
         } else {
             // currentUser["isOnline"] = true
@@ -133,8 +135,8 @@ function Chat() {
                                 allUsers.map(userr => {
                                     console.log(allUsers)
                                     return (
-                                        userr._id != user.id
-                                        && <div className="groupList__groups__group" onClick={() => selectUser(userr._id)}>
+                                        userr.id != user.id
+                                        && <div className="groupList__groups__group" onClick={() => selectUser(userr.id)}>
                                             <img src={userr.profile != "" && `http://localhost:4500/profile/dp/${userr.profile}`} />  <span>{userr.name}</span>
                                         </div>
                                     )

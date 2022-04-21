@@ -26,8 +26,8 @@ const mainReducer = (state = initialState, action) => {
             }
             return {
                 ...state,
-                userOnline: action.payload.users,
-                selectedUser: obj1
+                userOnline: action.payload,
+                // selectedUser: obj1
             }
 
         case CHATS:
