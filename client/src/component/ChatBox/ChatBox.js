@@ -10,12 +10,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom'
 import Selfie from '../selfie/Selfie'
 
-function ChatBox({ selectedUser, usersOnline }) {
+function ChatBox() {
     const user = useSelector(state => state.auth.currUser)
     const messages = useSelector(state => state.main.currentChat)
     const socket = useSelector(state => state.auth.socket)
     const [clickImage, setClickImage] = useState(false)
     const [message, setMessage] = useState("")
+    const selectedUser = useSelector(state => state.main.selectedUser)
+    const usersOnline = useSelector(state => state.main.userOnline)
     const photoRef = useRef(null)
     let isOnline = usersOnline.find(obj => obj.id == selectedUser.id)
     const [image, setImage] = useState(null)
@@ -42,7 +44,7 @@ function ChatBox({ selectedUser, usersOnline }) {
 
     return (
         <div className='chatContainer'>
-            <Link to={{ pathname: `/userprofile/${selectedUser.id}` }}><div className='chatHeader' >
+            <Link to={{ pathname: `/chats/userprofile/${selectedUser.id}` }}><div className='chatHeader' >
                 <img className='chatContainerImage' src={`http://localhost:4500/profile/dp/${selectedUser.profile}`} />
                 <div className='chatHeader__text'>
                     <div><h5>{selectedUser.username} </h5><span className={`onlineStatus ${isOnline !== undefined && 'online'}`}></span></div>

@@ -1,8 +1,4 @@
-.profileContainer{
-    width: 100vw;
-    height: 100vh;
-    background-color: silver;
-}
+
 .backBtn{
     position:absolute;
     left: 2rem;
@@ -14,7 +10,7 @@
 .profile{
     
     position: relative;
-    width: 50%;
+    width: 68%;
     height: 100%;
     background-color: whitesmoke;
     margin: auto;

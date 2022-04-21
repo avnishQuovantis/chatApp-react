@@ -6,6 +6,8 @@ import useSelect from "../useSelect"
 import axios from "axios"
 import AllChats from './allChats/AllChats'
 import { Outlet, useNavigate, NavLink } from 'react-router-dom'
+import UserOnline from '../OnlineUsers/UserOnline'
+import AllUsers from '../AllUsers/AllUsers'
 function Users({ usersOnline, image, name, id, socketId }) {
 
     const { chats, allUsers } = useSelector(state => state.main)
@@ -36,15 +38,15 @@ function Users({ usersOnline, image, name, id, socketId }) {
         }
     }, [searchValue])
     const tabClick = (tab) => {
-        if (tab == 0) {
-            navigate("/chats")
+        // if (tab == 0) {
+        //     navigate("/chats")
 
-        }
-        else if (tab == 1) {
-            navigate("/chats/allusers")
-        } else {
-            navigate("/chats/online")
-        }
+        // }
+        // else if (tab == 1) {
+        //     navigate("/chats/allusers")
+        // } else {
+        //     navigate("/chats/online")
+        // }
         setToggleClass(tab)
     }
     return (
@@ -97,8 +99,9 @@ function Users({ usersOnline, image, name, id, socketId }) {
                             </>
                         )
                     }) :
-                    // <AllChats />
-                    <Outlet />
+                    toggleClass == 0 ? <AllChats /> : toggleClass == 1 ? <AllUsers /> : <UserOnline />
+
+                // <Outlet />
             }
         </div>
     )

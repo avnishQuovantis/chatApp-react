@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import "./Chat.css"
 import socketIO, { io } from "socket.io-client"
 import Message from '../Message/Message'
@@ -107,11 +107,11 @@ function Chat() {
             <div className='chatPageContainer'>
                 {console.log(user)}
                 <Users usersOnline={usersOnline} image={user.profile} name={user.username} id={user.id} socketId={user.socketId} selectUser={selectUser} />
-
-                {
+                <Outlet />
+                {/* {
                     selectedUser == null ? <NoChat /> :
                         <ChatBox usersOnline={usersOnline} selectedUser={selectedUser} />
-                }
+                } */}
 
                 {/* <div className='groupList'>
                     <div className='groupList__peope'>
