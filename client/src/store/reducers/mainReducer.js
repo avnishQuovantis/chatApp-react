@@ -18,16 +18,11 @@ const mainReducer = (state = initialState, action) => {
             }
         case USER_ONLINE:
             console.log(action.payload);
-            let obj1 = null
-            if (state.selectedUser != null) {
-                obj1 = { ...state.selectedUser, seen: action.payload.lastSeen }
-            } else {
-                obj1 = null
-            }
+            // for(let i=0;i<state.allUsers.length;i++){}
             return {
                 ...state,
                 userOnline: action.payload,
-                // selectedUser: obj1
+
             }
 
         case CHATS:

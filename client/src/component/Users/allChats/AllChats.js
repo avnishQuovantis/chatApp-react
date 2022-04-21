@@ -1,8 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import useSelect from '../../useSelect'
 
-export default function AllChats({ id, selectUser }) {
+export default function AllChats() {
     const chats = useSelector(state => state.main.chats)
+    const { selectUser } = useSelect()
+    const id = useSelector(state => state.auth.currUser.id)
     return (
         chats.map((chat, index) => {
             console.log("inside chats", chat)

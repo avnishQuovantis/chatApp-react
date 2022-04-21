@@ -4,12 +4,16 @@ import { useSelector } from "react-redux"
 import Dropdown from '../dropdown/Dropdown'
 import useSelect from "../useSelect"
 import axios from "axios"
+import AllChats from './allChats/AllChats'
+import { Outlet, useNavigate, NavLink } from 'react-router-dom'
 function Users({ usersOnline, image, name, id, socketId }) {
 
     const { chats, allUsers } = useSelector(state => state.main)
     const [searchUsers, setSearchUsers] = useState(null)
     const [searchValue, setSearchValue] = useState("")
     const { selectUser } = useSelect()
+    const navigate = useNavigate()
+    const [toggleClass, setToggleClass] = useState(0)
     const search = () => {
         console.log("inside search");
         if (searchValue == "")
@@ -31,6 +35,18 @@ function Users({ usersOnline, image, name, id, socketId }) {
             setSearchUsers(null)
         }
     }, [searchValue])
+    const tabClick = (tab) => {
+        if (tab == 0) {
+            navigate("/chats")
+
+        }
+        else if (tab == 1) {
+            navigate("/chats/allusers")
+        } else {
+            navigate("/chats/online")
+        }
+        setToggleClass(tab)
+    }
     return (
         <div className='userList'>
             <div className='userList__heading'>
@@ -51,13 +67,13 @@ function Users({ usersOnline, image, name, id, socketId }) {
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={search}><i class="bi bi-search"></i></button>
             </div>
             <div className="userList__tabs">
-                <button className='btn'>
+                <button className={`btn ${toggleClass == 0 && 'tabHighlight'}`} onClick={() => tabClick(0)} >
                     chats
                 </button>
-                <button className='btn'>
+                <button className={`btn ${toggleClass == 1 && 'tabHighlight'}`} onClick={() => tabClick(1)}>
                     all
                 </button>
-                <button className='btn'>
+                <button className={`btn ${toggleClass == 2 && 'tabHighlight'}`} onClick={() => tabClick(2)} >
                     online
                 </button>
             </div>
@@ -81,33 +97,8 @@ function Users({ usersOnline, image, name, id, socketId }) {
                             </>
                         )
                     }) :
-
-                    chats.map((chat, index) => {
-                        console.log("inside chats", chat)
-                        return (
-                            <>
-                                {
-                                    id != chat.id && <div className="userList__user" key={index} onClick={() => selectUser(chat.id)} >
-
-                                        <img src={`http://localhost:4500/profile/dp/${chat.profile}`} />
-                                        <div className='userList__user__right'>
-                                            <div >
-                                                <h5 className='bold'>{chat.username}   </h5>
-                                                <span className='messageTime'>{chat["messages"][chat["messages"].length - 1]["time"]}</span>
-                                            </div>
-                                            <div >
-                                                <div>{chat["messages"][chat["messages"].length - 1]["type"] == "text" ?
-                                                    chat["messages"][chat["messages"].length - 1]['content'].substring(0, 10) : "File"}</div>
-                                                <span> <i class="bi bi-circle"></i></span>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                }
-                            </>
-                        )
-                    })
+                    // <AllChats />
+                    <Outlet />
             }
         </div>
     )

@@ -16,8 +16,8 @@ function AllUsers() {
                     allUsers.map(userr => {
                         console.log(allUsers)
                         return (
-                            userr._id != user.id
-                            && <div className="groupList__groups__group" onClick={() => selectUser(userr._id)}>
+                            userr.id != user.id
+                            && <div className="groupList__groups__group" onClick={() => selectUser(userr.id)}>
                                 <img src={userr.profile != "" && `http://localhost:4500/profile/dp/${userr.profile}`} />  <span>{userr.name}</span>
                             </div>
                         )

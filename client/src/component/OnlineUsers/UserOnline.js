@@ -1,8 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-function UserOnline({ selectUser, user, usersOnline }) {
-
+import useSelect from '../useSelect';
+function UserOnline() {
+    const { selectUser } = useSelect()
+    const user = useSelector(state => state.auth.currUser)
+    const usersOnline = useSelector(state => state.main.userOnline)
     return (
         <div className='groupList__peope'>
             <span className='groupList__people__heading'><PersonOutlinedIcon />People Online</span>

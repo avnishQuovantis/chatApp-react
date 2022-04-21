@@ -11,6 +11,7 @@ function useSelect() {
     const selectUser = (id) => {
         // console.log("user online ", usersOnline);
         let currentUser = usersOnline.find(userr => userr.id === id)
+        console.log("currentUser", currentUser);
         if (currentUser == undefined) {
             currentUser = allUsers.find(userr => userr.id === id)
         }

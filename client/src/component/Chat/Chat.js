@@ -12,6 +12,7 @@ import { CURRENT_CHAT, SET_SOCKET, LAST_SEEN, SELECT_USER, SET_SOCKET_ID, UPDATE
 import ChatBox from '../ChatBox/ChatBox'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import NoChat from '../NoChat/NoChat'
+import AllUsers from '../AllUsers/AllUsers'
 const ENDPOINT = "http://localhost:4500/"
 
 let socket
@@ -112,7 +113,7 @@ function Chat() {
                         <ChatBox usersOnline={usersOnline} selectedUser={selectedUser} />
                 }
 
-                <div className='groupList'>
+                {/* <div className='groupList'>
                     <div className='groupList__peope'>
                         <span className='groupList__people__heading'><PersonOutlinedIcon />People Online</span>
                         {
@@ -126,26 +127,8 @@ function Chat() {
                                         </div>}</>)
                             })}
                     </div>
-                    <div className='groupList__groups'>
-                        <div className='groupList__groups__heading'>
-                            <span><i class="bi bi-people-fill"></i> All people</span>
-                        </div>
-                        <div className='groupList__groups__list'>
-                            {
-                                allUsers.map(userr => {
-                                    console.log(allUsers)
-                                    return (
-                                        userr.id != user.id
-                                        && <div className="groupList__groups__group" onClick={() => selectUser(userr.id)}>
-                                            <img src={userr.profile != "" && `http://localhost:4500/profile/dp/${userr.profile}`} />  <span>{userr.name}</span>
-                                        </div>
-                                    )
-                                })
-                            }
-
-                        </div>
-                    </div>
-                </div>
+                    <AllUsers />
+                </div> */}
             </div>
         </div >
     )
