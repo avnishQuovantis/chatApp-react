@@ -25,26 +25,41 @@ async function saveChats(from, to, message, type, mimetype) {
         let index = chats.findIndex(obj => obj.id == to.id)
         let messageContent = formatMessage(from.username, from.id, message, type, mimetype)
         if (index != -1) {
+            chats[index]['seenCount']++
             chats[index]["messages"].push(messageContent)
+
+            let aw = chats.filter((obj, i) => {
+                return i !== index
+            })
+            aw.unshift(chats[index])
+            chats = aw
+
         } else {
-            chats.push({ id: to.id, username: to.username, profile: to.profile, messages: [messageContent] })
-            index++
+            chats.unshift({ id: to.id, username: to.username, profile: to.profile, messages: [messageContent], seenCount: 1 })
+
         }
         await userModel.findByIdAndUpdate(from.id, { chats: chats })
 
         let otherUser = await userModel.findById(to.id).select("chats")
         let otherChats = otherUser["chats"]
-        // console.log("other user ave chats", otherChats);
         let i = otherChats.findIndex(obj => obj.id == from.id)
         if (i != -1) {
+            otherChats[i]['seenCount']++
             otherChats[i]["messages"].push(messageContent)
+            let aw = otherChats.filter((obj, ind) => {
+                return ind !== i
+            })
+            aw.unshift(otherChats[i])
+            otherChats = aw
         } else {
-            otherChats.push({ id: from.id, username: from.username, profile: from.profile, messages: [messageContent] })
-            i++
+            otherChats.unshift({ id: from.id, username: from.username, profile: from.profile, messages: [messageContent], seenCount: 1 })
+            // i++
         }
+        console.log('from chats', chats, 'to chats ', otherChats, 'chats ', 'from inde ', index, 'to index', i);
         await userModel.findByIdAndUpdate(to.id, { chats: otherChats })
-
-        return chats[index]
+        i = otherChats.findIndex(obj => obj.id == from.id)
+        index = chats.findIndex(obj => obj.id == to.id)
+        return { chatMessage: chats[index], otherMessage: otherChats[i], otherChats, chats }
     } catch (err) {
         console.log(err);
     }
@@ -56,16 +71,24 @@ async function getChat(user, to) {
         console.log("inside getChat user ", user);
         let getAllData = await userModel.findById(user).select("chats")
         let lastSeen = await userModel.findById(to).select("seen")
-        console.log("last  seen", lastSeen);
-        console.log("inside All Chats ", getAllData);
+        // console.log("last  seen", lastSeen);
+        // console.log("inside All Chats ", getAllData);
         let getUserChat = getAllData.chats.find(obj => obj.id == to)
         console.log("chat = ", getUserChat);
+        let ll = []
+        for (let i = 0; i < getAllData.chats.length; i++) {
+            if (getAllData.chats[i].id == to) {
+                ll.push({ ...getAllData.chats[i], seenCount: 0 })
+            } else {
+                ll.push(getAllData.chats[i])
+            }
+        }
+        console.log('seen count in get chat', ll);
         if (getUserChat === undefined) {
             return []
         } else {
             return { getUserChat, lastSeen }
         }
-
     } catch (Err) { }
 }
 function getChatImage(req, res) {
@@ -88,8 +111,9 @@ async function getAllUsers() {
             let obj = { name: doc.name, username: doc.username, status: doc.status, email: doc.email, id: doc._id, seen: doc.seen, profile: doc.profile }
             console.log("doc ", obj);
 
-            allUsers.push(doc)
+            allUsers.push(obj)
         }
+        console.log("allUsers ,", allUsers);
         return allUsers
     } catch (err) {
         console.log();

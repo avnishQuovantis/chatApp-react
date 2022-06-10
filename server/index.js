@@ -80,11 +80,14 @@ io.on("connection", (socket) => {
         io.emit("userJoined", { message: "user has joined", user: user, currentUsers: getUsersOnline() })
 
         socket.on("sendPrivateMessage", async ({ content, to, from, type }) => {
-            console.log("private message ",);
+            console.log("private message from", from, 'to ', to);
             const getUser = getCurrentUser(to.id)
-            let message = await saveChats(from, to, content, type, null)
-            console.log(message);
-            io.to(to.socketId).to(socket.id).emit("privateMessage", { from: user, message: message, to: getUser })
+
+            console.log('get user ', getUser);
+            let { chatMessage, otherMessage, chats, otherChats } = await saveChats(from, to, content, type, null)
+            console.log("to in send private", chatMessage, 'other chat message in sae', otherMessage);
+            io.to(socket.id).emit("privateMessageSender", { message: otherMessage, to, chats: chats })
+            io.to(to.socketId).emit("privateMessageReciever", { from, message: otherMessage, chats: otherChats })
         })
 
         socket.on("sendImagePrivate", async ({ content, to, from, type, mimetype, name }) => {
@@ -92,15 +95,16 @@ io.on("connection", (socket) => {
             const filename = await storeImage(from, to, content, mimetype, name)
             console.log("filename -" + filename);
             const getUser = getCurrentUser(to.id)
-            let message = await saveChats(from, to, filename, type, mimetype)
-            console.log("sendImageMessagee " + message);
-            io.to(to.socketId).to(socket.id).emit("privateMessage", { from: user, message: message, to: getUser })
+            let { chatMessage, otherMessage, chats, otherChats } = await saveChats(from, to, filename, type, mimetype)
+            console.log("sendImageMessagee " + chatMessage);
+            io.to(socket.id).emit("privateMessageSender", { message: otherMessage, to, chats: chats })
+            io.to(to.socketId).emit("privateMessageReciever", { from, message: otherMessage, chats: otherChats })
         })
         socket.on("userChat", async ({ user, to }) => {
-            console.log(user);
+            console.log(user, to);
             let { getUserChat, lastSeen } = await getChat(user.id, to.id)
-            console.log("getUserChat", getUserChat);
-            socket.emit("getUserChat", { to: to, chat: getUserChat, lastSeen: lastSeen.seen })
+            console.log("getUserChat", lastSeen);
+            socket.emit("getUserChat", { to: to, chat: getUserChat, lastSeen: lastSeen != undefined ? lastSeen.seen : undefined })
         })
 
 

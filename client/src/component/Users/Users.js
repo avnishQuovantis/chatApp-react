@@ -3,12 +3,10 @@ import "./Users.css"
 import { useSelector } from "react-redux"
 import Dropdown from '../dropdown/Dropdown'
 import useSelect from "../useSelect"
-import axios from "axios"
 import AllChats from './allChats/AllChats'
-import { Outlet, useNavigate, NavLink } from 'react-router-dom'
-import UserOnline from '../OnlineUsers/UserOnline'
-import AllUsers from '../AllUsers/AllUsers'
-function Users({ usersOnline, image, name, id, socketId }) {
+import { useNavigate } from 'react-router-dom'
+import UsersList from './UserList/UsersList'
+function Users({ usersOnline, image, name, id, socketId, urlPath }) {
 
     const { chats, allUsers } = useSelector(state => state.main)
     const [searchUsers, setSearchUsers] = useState(null)
@@ -23,7 +21,7 @@ function Users({ usersOnline, image, name, id, socketId }) {
         let arr = []
         let obj = allUsers.filter(ob => {
             console.log("inside search ", ob);
-            if (ob._id != id && (ob.name.includes(searchValue) || ob.username.includes(searchValue))) {
+            if (ob._id != id && (ob.name.toLowerCase().includes(searchValue) || ob.username.toLowerCase().includes(searchValue))) {
 
                 return ob
             }
@@ -31,7 +29,7 @@ function Users({ usersOnline, image, name, id, socketId }) {
         console.log("search users ", obj);
         setSearchUsers(obj)
     }
-
+    console.log("path location here ", urlPath);
     useEffect(() => {
         if (searchValue == "") {
             setSearchUsers(null)
@@ -50,7 +48,7 @@ function Users({ usersOnline, image, name, id, socketId }) {
         setToggleClass(tab)
     }
     return (
-        <div className='userList'>
+        <div className={urlPath ? 'userList fullScreen' : 'userList'}>
             <div className='userList__heading'>
                 <img src={image ? "http://localhost:4500/profile/dp/" + image : ""} className='userList__heading__left' />
 
@@ -68,40 +66,24 @@ function Users({ usersOnline, image, name, id, socketId }) {
                     placeholder='&#128269; Search friends' se />
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" onClick={search}><i class="bi bi-search"></i></button>
             </div>
-            <div className="userList__tabs">
-                <button className={`btn ${toggleClass == 0 && 'tabHighlight'}`} onClick={() => tabClick(0)} >
-                    chats
-                </button>
-                <button className={`btn ${toggleClass == 1 && 'tabHighlight'}`} onClick={() => tabClick(1)}>
-                    all
-                </button>
-                <button className={`btn ${toggleClass == 2 && 'tabHighlight'}`} onClick={() => tabClick(2)} >
-                    online
-                </button>
-            </div>
             {
                 searchUsers != null ?
-                    searchUsers.map(users => {
+                    <UsersList userArray={searchUsers} />
+                    : <>
+                        <div className="userList__tabs">
+                            <button className={` ${toggleClass == 0 && 'tabHighlight'}`} onClick={() => tabClick(0)} >
+                                chats
+                            </button>
+                            <button className={` ${toggleClass == 1 && 'tabHighlight'}`} onClick={() => tabClick(1)}>
+                                all
+                            </button>
+                            <button className={` ${toggleClass == 2 && 'tabHighlight'}`} onClick={() => tabClick(2)} >
+                                online
+                            </button>
+                        </div>
+                        {toggleClass == 0 ? <AllChats /> : toggleClass == 1 ? <UsersList userArray={allUsers} /> : <UsersList userArray={usersOnline} />}
+                    </>
 
-                        return (
-                            <>
-                                {users.id != id && <div className="userList__user" onClick={() => selectUser(users._id)} >
-
-                                    <img src={`http://localhost:4500/profile/dp/${users.profile}`} />
-                                    <div className='userList__user__right'>
-                                        <div >
-                                            <h5 className='bold'>{users.username}   </h5>
-                                        </div>
-
-                                    </div>
-
-                                </div>}
-                            </>
-                        )
-                    }) :
-                    toggleClass == 0 ? <AllChats /> : toggleClass == 1 ? <AllUsers /> : <UserOnline />
-
-                // <Outlet />
             }
         </div>
     )

@@ -7,7 +7,10 @@
     justify-content: center;
     padding: 0.5rem;
     align-items: center;
-    background-color: rgb(155, 155, 253);
+    background-color: whitesmoke;
+    color:blue;
+    margin: 0.5rem;
+    border-radius: 1rem;
 }
 
 .userList__heading__left{
@@ -15,40 +18,25 @@
     height: 5vmax;
     border-radius: 100%;
 }
-.tabHighlight{
-    background-color: whitesmoke;
-    color:gray
-}
 .tabLink{
     padding:0.2rem;
 
 }
-.usersList__tab{
-    /* height: 4vh; */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: whitesmoke;
-}
-.usersList__tab >button{
-    width: 33%;
-    height: 100%;
-    background-color: whitesmoke;
-    color:silver
-}
+
+
 
 /* .userList__heading__left>img{
     width: 100%;
     height: 100%;
 } */
 .userList__heading__right{
-    font-size: 2.4vmax;
+    font-size: 3vmax;
     width: 60%;
     display: flex;
     align-items: center;
+    font-family: "Poppins";
     padding: 0.5rem;
-    color: white;
+    color: blue;
 }
 
 .userList__search{
@@ -56,7 +44,7 @@
     width: 95%;
 }
 .userList__search input{
-   
+    
     color: gray;
     padding: 0.4rem 0.6rem;
     font-size: 1.5vw;
@@ -71,29 +59,31 @@
     font-weight: 500;
 }
 
-.userList__user{
+.userList__allchat{
     background: white;
     margin: 1rem 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-        transition: 0.2s all;
+    transition: 0.2s all;
     padding:0.2rem;
     display: flex;
 }
-.userList__user:hover{
+.userList__allchat:hover{
     transform: scale(1.01);
     opacity: 0.95;
 }
-.userList__user>img{
+.userList__allchat>img{
     width: 5vmax;
     height:5vmax;
     margin:0.2rem;
+    margin-right: 0.5rem;
+    border-radius: 100%;
 }
-.userList__user__right{
+.userList__allchat__right{
     width: 100%;
     font-family: 'Poppins', sans-serif;
-
+    
 }
-.userList__user__right >div:first-child{
+.userList__allchat__right >div:first-child{
     display: flex;
     justify-content: space-between;
     font-size: 1.5vmax;
@@ -102,12 +92,14 @@
     padding: 0 0.2rem;
     height: 50%;
 }
-.userList__user__right h5{
+.userList__allchat__right h5{
     margin: 0;
- color:   #5282f0;
- font-size:1.8vmax
+    color:   #5282f0;
+    font-size:1.8vmax;
+    font-weight:500;
+    font-family: "Roboto";
 }
-.userList__user__right >div:last-child{
+.userList__allchat__right >div:last-child{
     display: flex;
     padding: 0.2rem;
     font-size: 1.2vmax;
@@ -124,4 +116,49 @@
     display: flex;
     width: 100%;
     justify-content: space-evenly;
+    /* background-color: floralwhite; */
+}
+.userList__tabs >*{
+    width: 33%;
+    font-size: 1.5vmax;
+    font-family: "Poppins";
+    transition: all .4s;
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    background-color: floralwhite;
+    line-height: 1.5;
+    /* bac */
+}
+.userList__tabs >*:hover{
+    opacity: 0.9;
+    color:gray;
+}
+.tabHighlight{
+    background-color: silver!important;
+    color:white!important;
+}
+.userList__userContainer{
+    width: 100%;
+    /* height: 30vh; */
+    overflow-y: auto;
+}
+.userList__userContainer__user{
+    font-size: 1.7vmax;
+    display: flex;
+    box-shadow: rgb(0 0 0 / 5%) 0px 0px 0px 1px;
+    align-items: center;
+    padding: 0.4rem;
+    font-family: 'Poppins';
+    margin: 0.7rem 0;
+}
+.userList__userContainer img {
+    width: 4vmax;
+    height: 4vmax;
+    border-radius: 100%;
+    margin-right: 0.7rem;
 }

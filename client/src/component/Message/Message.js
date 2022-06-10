@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./Message.css"
 import { saveAs } from "file-saver"
-const Message = ({ username, message, classs, item, index, time, type }) => {
+const Message = ({ username, message, classs, item, index, time, type, profile }) => {
     console.log(message);
 
     const [open, setOpen] = useState(false)
@@ -16,6 +16,8 @@ const Message = ({ username, message, classs, item, index, time, type }) => {
         if (type == "image") {
             return (
                 <div className={`messageBox ${classs} messageBoxImage`}>
+                    {classs == 'left' && <img src={`http://localhost:4500/profile/dp/${profile}`} width="2rem" height="2rem" />}
+
                     <div className='messageBoxName bold'>
                         {`${username == '' ? 'you' : username}:`}
                     </div>
@@ -31,8 +33,10 @@ const Message = ({ username, message, classs, item, index, time, type }) => {
         else {
             return (
                 <div className={`messageBox ${classs} `}  >
-                    <div className='bold'>{`${username == '' ? 'you' : username}:`}</div>
-                    {console.log(message)}
+                    {classs == 'left' && <img src={`http://localhost:4500/profile/dp/${profile}`} width="2rem" height="2rem" />}
+
+                    <div className='bold messageBoxName'>{`${username == '' ? 'you' : username}:`}</div>
+
                     <a href={`http://localhost:4500/posts/images/${message}`} ><i class="bi bi-file-earmark"></i>{message.split("__")[1].split("---")[1]}</a>
                     <span >{time}</span>
                 </div>
@@ -41,7 +45,8 @@ const Message = ({ username, message, classs, item, index, time, type }) => {
     } else {
         return (
             <div className={`messageBox ${classs}`} >
-                <div className='bold'>{`${username == '' ? 'you' : username}:`}</div>
+                {classs == 'left' && <img src={`http://localhost:4500/profile/dp/${profile}`} width="2rem" height="2rem" />}
+                <div className='bold messageBoxName'>{`${username == '' ? 'you' : username}:`}</div>
                 <div>{message}</div>
                 <span >{time}</span>
             </div>

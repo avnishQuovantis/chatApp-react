@@ -31,13 +31,19 @@ function Join() {
     return (
         <div className='LoginPage'>
             <div className='LoginContainer'>
-                <img src={logo} />
-                <h1>Chat</h1>
-                <input className="loginInput" onChange={e => setEmail(e.target.value)} value={email} placeholder="Enter your email" />
-                <input className="loginInput" onChange={e => settPassword(e.target.value)} value={password} type="password" />
-                <button onClick={handleSend} className="loginbtn">Login in</button>
-                <hr></hr>
-                <button onClick={() => navigate("signup")}>signup</button>
+                <div className='LoginContainer__left'>
+                    <img src='https://www.tutorialspoint.com/communication_technologies/images/mobile_communication_protocols.jpg' />
+                </div>
+                <div className='LoginContainer__right'>
+                    <img src={logo} />
+                    <h1>Chat</h1>
+                    <input className="loginInput" onChange={e => setEmail(e.target.value)} value={email} placeholder="Enter your email" />
+                    <input className="loginInput" onChange={e => settPassword(e.target.value)} value={password} type="password" placeholder='Enter Your Password' />
+                    <button onClick={handleSend} className="loginbtn">Login in</button>
+                    <hr></hr>
+                    <button className="btn btn-outline-danger" onClick={() => navigate("signup")}>signup</button>
+
+                </div>
             </div>
 
         </div>

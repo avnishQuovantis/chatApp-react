@@ -10,9 +10,14 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
 }
-.messageBox>div{
+.messageBoxName{
     display: inline-block;
-    font-size: 1.5vmax;
+}
+.messageBox>div{
+    /* display: inline-; */
+    font-size: 1.3vmax;
+    word-break: break-word;
+    font-family: "Poppins";
 }
 .right{
     float:right;
@@ -27,6 +32,12 @@ color:white;
     float:left;
 background-color: ghostwhite
 
+}
+.left >img:first-child{
+    width: 4vmax;
+    border-radius: 100%;
+    height: 4vmax;
+    margin: 0.5rem;
 }
 .left a{
     color:blue;
@@ -45,9 +56,9 @@ background-color: ghostwhite
 .messageBoxImage{
   display: block;
 }
-.messageBoxImage div{
+/* .messageBoxImage div{
     display: block;
-}
+} */
 .messageBoxImage span{
     position: relative;
     display: flex;

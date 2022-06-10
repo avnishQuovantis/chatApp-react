@@ -49,72 +49,89 @@ export default function Signup() {
     setState({ name: "", username: "", email: "", password: "", address: "" });
   };
   return (
-    <div className="login signup ">
-      <h1 data-testid="signupTitle">SignUp</h1>
-      <div>
-        <h5> Name</h5>
-        <input
-          name="name"
-          type="text"
-          value={state.name}
-          class="form-control"
-          placeholder="fname"
-          onChange={changeInput}
-        />
-      </div>
-      <div>
-        <h5>username</h5>
-        <input
-          name="username"
-          type="text"
-          value={state.username}
-          class="form-control"
-          placeholder="lname"
-          onChange={changeInput}
-        />
+    <div className="signupContainer">
+      <div className="signup">
+        <div className="signup__left">
+          <img src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
 
-      </div>
-      <div>
-        <h5>Email</h5>
-        <input
-          name="email"
-          type="email"
-          value={state.email}
-          class="form-control"
-          placeholder="email"
-          onChange={changeInput}
-        />
-      </div>
-      <div>
-        <h5>Password</h5>
-        <input
-          name="password"
-          value={state.password}
-          type="password"
-          class="form-control"
-          placeholder="password"
-          onChange={changeInput}
-        />
-      </div>
-      <div>
-        <h5>Status </h5>
-        <input name="status"
-          value={state.status}
-          type="text"
-          class="form-control"
-          placeholder="status"
-          onChange={changeInput}
-        />
-      </div>
-      <input type="file" name="profile" accept="image/*" onChange={e => {
-        const fileUpload = e.target.files[0]
-        console.log();
-        setFile(fileUpload)
-      }} />
+        </div>
+        <div className="signup__right ">
+          <h1 data-testid="signupTitle">SignUp</h1>
+          <div className="signup__inputsContainer">
+            <i class="bi bi-person"></i>
+            <input
+              name="name"
+              type="text"
+              value={state.name}
+              class="signup__inputs"
+              placeholder="Name"
+              onChange={changeInput}
+            />
+          </div>
+          <div className="signup__inputsContainer">
+            <i class="bi bi-person-bounding-box"></i>
+            <input
+              name="username"
+              type="text"
+              value={state.username}
+              class="signup__inputs"
+              placeholder="username"
+              onChange={changeInput}
+            />
 
-      <button className="btn btn-danger" onClick={submitButton} >
-        submit
-      </button>
+          </div>
+          <div className="signup__inputsContainer">
+            <i class="bi bi-envelope-fill"></i>
+            <input
+              name="email"
+              type="email"
+              value={state.email}
+              class="signup__inputs"
+              placeholder="email"
+              onChange={changeInput}
+            />
+          </div>
+          <div className="signup__inputsContainer">
+            <i class="bi bi-shield-fill"></i>
+            <input
+              name="password"
+              value={state.password}
+              type="password"
+              class="signup__inputs"
+              placeholder="password"
+              onChange={changeInput}
+            />
+          </div>
+          <div className="signup__inputsContainer">
+            <i class="bi bi-bookmarks-fill"></i>
+            <input name="status"
+              value={state.status}
+              type="text"
+              class="signup__inputs"
+              placeholder="status"
+              onChange={changeInput}
+            />
+          </div>
+          <div class="signup__fileUpload" >
+            <input type="file" id="signup__imageInput" accept='image/*'
+              onChange={e => {
+                const fileUpload = e.target.files[0]
+                console.log();
+                setFile(fileUpload)
+              }} />
+            <label for="signup__imageInput" className="btn btn-primary" ><i class="bi bi-image-fill"></i> FileUpload</label>
+          </div>
+          {/* <input type="file" name="profile" accept="image/*" onChange={e => {
+            const fileUpload = e.target.files[0]
+            console.log();
+            setFile(fileUpload)
+          }} /> */}
+
+          <button className="btn btn-danger" onClick={submitButton} >
+            submit
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

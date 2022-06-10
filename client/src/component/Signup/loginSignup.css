@@ -1,29 +1,36 @@
-.login{
-    position: relative;
-    top: 17vh;
-    width: 380px;
-    margin: auto;
-    /* border: 2px solid; */
-    height: 400px;
-    padding:1rem;
+.signupContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signup{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.signupTitle{
+    margin: 0;
+    font-size: 2.5vmax;
+
+}
+.signup__left{
+    height: 100%;
+    width: 50%;
+    background-color: antiquewhite;
+}
+.signup__right{
     display: flex;
     flex-direction:column ;
     justify-content: space-evenly;
     align-items: center;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-.signup{
-    height: fit-content!important;
-    /* padding: 1.5rem!important; */
+    height: 100%;
+    width: 50%;
     padding: 1rem 2rem;
 }
-.signup > div{
-    width: 100%;
-    margin-top :10px;
-}
-.signup > button{
-    margin-top:10px
-}
+
 .line{
     width: 100%;
    color: grey;
@@ -32,4 +39,64 @@ align-items: center;
 }
 .line hr{
     width: 46%;
+}
+.signup__inputsContainer{
+    display: flex;
+    width: 100%;
+    align-items: end;
+}
+.signup__inputsContainer>i{
+    font-size: 2.2vmax;
+    display: flex;
+    border: 1px solid;
+    padding: 0.5rem;
+    align-items: end;
+    border-radius: 0.5rem;
+    color: blue;
+    margin-right: 0.2rem;
+}
+.signup__inputs{
+    border:none;
+    border-bottom: 3px solid gray;
+    width: 100%;
+    padding: 0.5vmax;
+    transition: all .3s ;
+}
+.signup__inputs::placeholder{
+    font-size: 2vmax;
+}
+.signup__inputs:focus{
+    border-bottom: 3px solid blue;
+    outline: none;
+    transform: scale(1.01);
+}
+.signup__fileUpload{
+    position: relative;
+}
+.signup__fileUpload > input{
+    opacity: 0;
+    width: 0.2rem;
+    height: 0.2rem;
+    top:0;
+    left: 0;
+    position: absolute;
+}
+.signup__fileUpload >label{
+    display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  font-size: 2.2vmax;
+  padding: 0.2rem 0.5rem;
+  transition: transform .2s ease-out;
+}
+.signup__fileUpload >label i{
+    margin-right: 0.4rem;
+}
+.signup__left img{
+    width: 100%;
+    height: 100%;
 }

@@ -9,7 +9,6 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom'
 import Selfie from '../selfie/Selfie'
-
 function ChatBox() {
     const user = useSelector(state => state.auth.currUser)
     const messages = useSelector(state => state.main.currentChat)
@@ -21,10 +20,10 @@ function ChatBox() {
     const photoRef = useRef(null)
     let isOnline = usersOnline.find(obj => obj.id == selectedUser.id)
     const [image, setImage] = useState(null)
+    const urlPath = useSelector(state => state.url.path)
     const sendPrivateMessage = () => {
         console.log(selectedUser);
         if (image == null) {
-
             socket.emit("sendPrivateMessage", { content: message, to: selectedUser, type: "text", from: user })
             console.log("send message");
             setMessage("")
@@ -43,15 +42,17 @@ function ChatBox() {
     }
 
     return (
-        <div className='chatContainer'>
-            <Link to={{ pathname: `/chats/userprofile/${selectedUser.id}` }}><div className='chatHeader' >
-                <img className='chatContainerImage' src={`http://localhost:4500/profile/dp/${selectedUser.profile}`} />
-                <div className='chatHeader__text'>
-                    <div><h5>{selectedUser.username} </h5><span className={`onlineStatus ${isOnline !== undefined && 'online'}`}></span></div>
-                    <div>{isOnline === undefined ? selectedUser["seen"] : "online"}</div>
+        <div className={urlPath !== '/chats' ? 'chatContainer fullScreen' : 'chatContainer'}>
+            <Link to={{ pathname: `/chats/userprofile/${selectedUser.id}` }}>
+                <div className='chatHeader' >
+                    <img className='chatContainerImage' src={`http://localhost:4500/profile/dp/${selectedUser.profile}`} />
+                    <div className='chatHeader__text'>
+                        <div><h5>{selectedUser.username} </h5><span className={`onlineStatus ${isOnline !== undefined && 'online'}`}></span></div>
+                        <div>{isOnline === undefined ? <span className='messageTime'>{selectedUser["seen"]} </span> : "online"}</div>
 
+                    </div>
+                    <Link to={{ pathname: "/chats" }}><button className="btn back"><i class="bi bi-arrow-left-circle"></i></button></Link>
                 </div>
-            </div>
             </Link>
             {
                 clickImage ? <Selfie selectedUser={selectedUser} setClickImage={setClickImage} socket={socket} photoRef={photoRef} /> :
@@ -70,11 +71,12 @@ function ChatBox() {
                         </div> :
                         <>
                             <ReactScrollToBottom className='chatBox'>
-
+                                {console.log("messages ", messages)}
                                 {
                                     messages.map((item, index) => {
                                         return (<Message type={item.type}
                                             username={item.id == user.id ? '' : item.username}
+                                            profile={selectedUser.profile}
                                             message={item.content} classs={item.id == user.id ? "right" : "left"}
                                             time={item.time}
                                         />)

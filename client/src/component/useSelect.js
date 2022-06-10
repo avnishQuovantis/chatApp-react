@@ -9,12 +9,12 @@ function useSelect() {
     const user = useSelector(state => state.auth.currUser)
     const dispatch = useDispatch()
     const selectUser = (id) => {
-        // console.log("user online ", usersOnline);
+        console.log("user online ", usersOnline);
         let currentUser = usersOnline.find(userr => userr.id === id)
-        console.log("currentUser", currentUser);
         if (currentUser == undefined) {
             currentUser = allUsers.find(userr => userr.id === id)
         }
+        console.log("currentUser", currentUser);
         socket.emit("userChat", { user: user, to: currentUser })
         dispatch({ type: SELECT_USER, payload: currentUser })
     }
