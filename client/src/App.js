@@ -26,9 +26,9 @@ function App() {
             <Route path="" element={<NoChat />} />
             <Route path="userprofile/:id" element={<UserProfile />} />
             <Route path=":id" element={<ChatBox />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
           {/* <Route path="userprofile/:id" element={<UserProfile></UserProfile>} /> */}
         </Routes>
       </Router>

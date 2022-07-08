@@ -7,7 +7,7 @@ function Dropdown() {
         <div class="dropdown">
             <button onClick={() => setShow(show => !show)} class="dropbtn"><i class="bi bi-three-dots-vertical"></i></button>
             <div id="myDropdown" class={`dropdown-content ${show ? "show" : ""}`}>
-                <Link to="/profile" >Profile</Link>
+                <Link to="/chats/profile" >Profile</Link>
                 <a href="/" >logout</a>
 
             </div>
